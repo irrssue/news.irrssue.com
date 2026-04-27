@@ -10,6 +10,17 @@ export interface HNItem {
   time: number;
 }
 
+export interface HNComment {
+  id: number;
+  by: string;
+  text: string;
+  time: number;
+  kids?: number[];
+  deleted?: boolean;
+  dead?: boolean;
+  children: HNComment[];
+}
+
 export function getAge(unixTime: number): string {
   const seconds = Math.floor(Date.now() / 1000) - unixTime;
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
@@ -42,4 +53,31 @@ export async function fetchTopStories(count = 30): Promise<HNItem[]> {
   );
 
   return items.filter(Boolean);
+}
+
+async function fetchComment(id: number, depth = 0): Promise<HNComment | null> {
+  if (depth > 4) return null; // limit nesting depth
+  const res = await fetch(`${BASE}/item/${id}.json`);
+  const item = await res.json();
+  if (!item || item.deleted || item.dead || !item.text) return null;
+
+  const children: HNComment[] = [];
+  if (item.kids?.length) {
+    const childResults = await Promise.all(
+      item.kids.slice(0, 5).map((kid: number) => fetchComment(kid, depth + 1))
+    );
+    children.push(...childResults.filter(Boolean) as HNComment[]);
+  }
+
+  return { ...item, children };
+}
+
+export async function fetchComments(storyId: number): Promise<HNComment[]> {
+  const res = await fetch(`${BASE}/item/${storyId}.json`);
+  const story = await res.json();
+  if (!story?.kids?.length) return [];
+
+  const top = story.kids.slice(0, 20);
+  const results = await Promise.all(top.map((id: number) => fetchComment(id)));
+  return results.filter(Boolean) as HNComment[];
 }
