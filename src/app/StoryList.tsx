@@ -1,32 +1,4 @@
-"use client";
-
-import { useState } from "react";
 import { HNItem, getAge, getDomain } from "./hn";
-
-const TAG_KEYWORDS: Record<string, string[]> = {
-  ai: ["ai", "gpt", "llm", "openai", "anthropic", "claude", "gemini", "ml", "machine learning", "neural", "transformer"],
-  web: ["javascript", "typescript", "react", "next", "css", "html", "browser", "web", "http", "api", "node"],
-  hw: ["hardware", "pcb", "chip", "cpu", "gpu", "fpga", "arduino", "raspberry", "embedded", "electronics", "emulator"],
-  sci: ["science", "physics", "math", "research", "paper", "study", "arxiv", "biology", "chemistry", "space", "nasa"],
-  sec: ["security", "vulnerability", "cve", "exploit", "hack", "breach", "malware", "crypto", "encryption", "zero-day"],
-};
-
-function tagStory(title: string): string {
-  const lower = title.toLowerCase();
-  for (const [tag, keywords] of Object.entries(TAG_KEYWORDS)) {
-    if (keywords.some((kw) => lower.includes(kw))) return tag;
-  }
-  return "other";
-}
-
-const TAGS = [
-  { id: "all", label: "all" },
-  { id: "ai", label: "ai" },
-  { id: "web", label: "web" },
-  { id: "hw", label: "hw" },
-  { id: "sci", label: "sci" },
-  { id: "sec", label: "sec" },
-];
 
 function StoryRow({ story, isLast }: { story: HNItem; isLast: boolean }) {
   const age = getAge(story.time);
@@ -153,17 +125,6 @@ function StoryRow({ story, isLast }: { story: HNItem; isLast: boolean }) {
 }
 
 export default function StoryList({ stories }: { stories: HNItem[] }) {
-  const [activeTag, setActiveTag] = useState("all");
-
-  const tagged = stories.map((s) => ({ ...s, _tag: tagStory(s.title) }));
-  const filtered =
-    activeTag === "all" ? tagged : tagged.filter((s) => s._tag === activeTag);
-
-  const tagCounts = TAGS.slice(1).map((t) => ({
-    ...t,
-    count: tagged.filter((s) => s._tag === t.id).length,
-  }));
-
   return (
     <>
       {/* Stats bar */}
@@ -181,54 +142,8 @@ export default function StoryList({ stories }: { stories: HNItem[] }) {
           <span style={{ color: "#aaa" }}>{stories.length}</span> links
         </span>
         <span>
-          <span style={{ color: "#aaa" }}>{tagCounts.filter((t) => t.count > 0).length}</span> tags
-        </span>
-        <span>
           updated <span style={{ color: "#aaa" }}>live</span>
         </span>
-      </div>
-
-      {/* Tag pills */}
-      <div
-        style={{
-          display: "flex",
-          gap: 5,
-          flexWrap: "wrap",
-          marginBottom: 48,
-        }}
-      >
-        {[{ id: "all", label: "all", count: stories.length }, ...tagCounts].map((tag) => {
-          const active = activeTag === tag.id;
-          return (
-            <button
-              key={tag.id}
-              onClick={() => setActiveTag(tag.id)}
-              style={{
-                padding: "5px 13px",
-                borderRadius: 100,
-                border: "1px solid",
-                borderColor: active ? "transparent" : "#222",
-                background: active ? "#e6e6e6" : "transparent",
-                color: active ? "#0c0c0c" : "#555",
-                fontSize: 12,
-                fontFamily: "var(--font-mono)",
-                cursor: "pointer",
-                transition: "all 0.1s",
-                display: "flex",
-                alignItems: "center",
-                gap: 4,
-                outline: "none",
-              }}
-            >
-              {tag.label}
-              {tag.id !== "all" && tag.count > 0 && (
-                <span style={{ opacity: 0.55, fontSize: 11 }}>
-                  · {tag.count}
-                </span>
-              )}
-            </button>
-          );
-        })}
       </div>
 
       {/* Section header */}
@@ -261,17 +176,17 @@ export default function StoryList({ stories }: { stories: HNItem[] }) {
             fontFamily: "var(--font-mono)",
           }}
         >
-          {filtered.length} links
+          {stories.length} links
         </span>
       </div>
 
       {/* Story list */}
       <div>
-        {filtered.map((story, i) => (
+        {stories.map((story, i) => (
           <StoryRow
             key={story.id}
             story={story}
-            isLast={i === filtered.length - 1}
+            isLast={i === stories.length - 1}
           />
         ))}
       </div>

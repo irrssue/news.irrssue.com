@@ -52,6 +52,14 @@ git push
 
 Or use `/commit-push-pr` skill in Claude Code to commit, push, and open PR in one step.
 
+## Deployment target
+
+- Domain: `news.irrssue.com` (subdomain of owned domain `irrssue.com`)
+- Host: personal Ubuntu homeserver
+- Stack: Next.js SSR via `npm start`, Nginx reverse proxy, Certbot SSL
+- DNS: point `news.irrssue.com` A record to homeserver public IP
+- PM2 recommended for process management (`pm2 start npm -- start`)
+
 ## Principles
 
 - No external component libraries
