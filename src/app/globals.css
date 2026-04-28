@@ -4,8 +4,8 @@
   --bg: #000000;
   --border: #1e1e1e;
   --text: #e2e2e2;
-  --text-dim: #888;
-  --text-faint: #4a4a4a;
+  --text-dim: #cccccc;
+  --text-faint: #707070;
 }
 
 * {
