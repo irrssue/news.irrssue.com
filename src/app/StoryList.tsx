@@ -172,7 +172,7 @@ function CommentsPanel({
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: 12,
-            color: "#333",
+            color: "#4d4d4d",
             textAlign: "center",
             padding: "24px 0",
           }}
@@ -186,7 +186,7 @@ function CommentsPanel({
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: 12,
-            color: "#333",
+            color: "#4d4d4d",
             textAlign: "center",
             padding: "24px 0",
           }}
@@ -344,7 +344,7 @@ function StoryRow({
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: 10,
-                color: "#333",
+                color: "#4d4d4d",
                 marginTop: 5,
                 transition: "color 0.1s",
               }}
@@ -397,7 +397,7 @@ export default function StoryList({ stories }: { stories: HNItem[] }) {
         <span
           style={{
             fontSize: 11,
-            color: "#333",
+            color: "#4d4d4d",
             fontFamily: "var(--font-mono)",
           }}
         >
