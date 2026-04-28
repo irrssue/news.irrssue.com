@@ -55,16 +55,22 @@ export async function fetchTopStories(count = 30): Promise<HNItem[]> {
   return items.filter(Boolean);
 }
 
+export async function fetchStory(id: number): Promise<HNItem | null> {
+  const res = await fetch(`${BASE}/item/${id}.json`, { next: { revalidate: 300 } });
+  const item = await res.json();
+  return item ?? null;
+}
+
 async function fetchComment(id: number, depth = 0): Promise<HNComment | null> {
-  if (depth > 4) return null; // limit nesting depth
-  const res = await fetch(`${BASE}/item/${id}.json`);
+  if (depth > 5) return null;
+  const res = await fetch(`${BASE}/item/${id}.json`, { next: { revalidate: 60 } });
   const item = await res.json();
   if (!item || item.deleted || item.dead || !item.text) return null;
 
   const children: HNComment[] = [];
   if (item.kids?.length) {
     const childResults = await Promise.all(
-      item.kids.slice(0, 5).map((kid: number) => fetchComment(kid, depth + 1))
+      item.kids.slice(0, 8).map((kid: number) => fetchComment(kid, depth + 1))
     );
     children.push(...childResults.filter(Boolean) as HNComment[]);
   }
@@ -78,6 +84,16 @@ export async function fetchComments(storyId: number): Promise<HNComment[]> {
   if (!story?.kids?.length) return [];
 
   const top = story.kids.slice(0, 20);
+  const results = await Promise.all(top.map((id: number) => fetchComment(id)));
+  return results.filter(Boolean) as HNComment[];
+}
+
+export async function fetchThreadComments(storyId: number): Promise<HNComment[]> {
+  const res = await fetch(`${BASE}/item/${storyId}.json`, { next: { revalidate: 60 } });
+  const story = await res.json();
+  if (!story?.kids?.length) return [];
+
+  const top = story.kids.slice(0, 40);
   const results = await Promise.all(top.map((id: number) => fetchComment(id)));
   return results.filter(Boolean) as HNComment[];
 }
