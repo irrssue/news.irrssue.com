@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(jq -r '.tool_input.file_path // .tool_response.filePath' 2>/dev/null); REPO=\"/Users/irrssue/Documents/minimal-hackernews\"; if [ -n \"$FILE\" ] && [ -f \"$FILE\" ]; then cd \"$REPO\" && git add \"$FILE\" && git diff --cached --quiet || (git commit -m \"auto: update $(basename $FILE)\" && git push origin main); fi 2>/dev/null || true",
+            "timeout": 30,
+            "statusMessage": "Committing and pushing..."
+          }
+        ]
+      }
+    ]
+  }
+}

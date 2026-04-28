@@ -43,14 +43,7 @@ npm run lint
 Live data from HN Firebase API (`https://hacker-news.firebaseio.com/v0`). Top 30 stories, revalidated every 5 minutes. Tags auto-assigned by keyword matching in `src/app/hn.ts`.
 
 ## Git workflow
-
-```
-git add <files>
-git commit -m "message"
-git push
-```
-
-Or use `/commit-push-pr` skill in Claude Code to commit, push, and open PR in one step.
+- add and write a easy to understand commit message and push the commit to my main branh in github, You don't need to open a PR.
 
 ## Deployment target
 
