@@ -6,7 +6,7 @@
 set -e
 
 REPO_DIR="$HOME/minimal-hackernews"
-PM2_APP="minimal-hackernews"
+PM2_APP="hackernews"
 BRANCH="main"
 
 # Ensure npm/pm2 in PATH when run from cron
