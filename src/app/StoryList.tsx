@@ -152,7 +152,7 @@ function CommentsPanel({
             cursor: "pointer",
             fontFamily: "var(--font-mono)",
             fontSize: 11,
-            color: "#444",
+            color: "#666666",
             padding: 0,
             transition: "color 0.1s",
           }}
