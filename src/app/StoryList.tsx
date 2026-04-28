@@ -113,7 +113,7 @@ function CommentsPanel({
   return (
     <div
       style={{
-        background: "#060606",
+        background: "#000000",
         border: "1px solid #181818",
         borderRadius: 4,
         padding: "20px 24px",
