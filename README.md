@@ -59,3 +59,4 @@ Runs on personal Ubuntu homeserver with Nginx reverse proxy + SSL.
 
 Built with [Next.js](https://nextjs.org).
 
+
