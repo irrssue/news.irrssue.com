@@ -72,7 +72,7 @@ function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) 
             style={{
               fontSize: 13,
               lineHeight: 1.65,
-              color: "#b8b8b8",
+              color: "#e8e8e8",
               fontFamily: "var(--font-inter)",
             }}
             dangerouslySetInnerHTML={{ __html: sanitizeHNHtml(comment.text) }}
