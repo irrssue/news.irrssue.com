@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Minimal Hacker News Reader
 
-## Getting Started
+Personal feed reader for **Hacker News** — stripped down, fast, dark theme.
 
-First, run the development server:
+**[📖 Read the live site →](https://news.irrssue.com)**
+
+---
+
+## What is this?
+
+A clean, minimal interface to browse the top tech stories from Hacker News. No distractions, no ads, no clutter — just stories and conversation.
+
+### Features
+
+- **Live feed**: Shows the 30 hottest stories updated every 5 minutes
+- **Dark theme**: Easy on the eyes
+- **Readable layout**: Large story titles, author info, comment count at a glance
+- **Auto-categorized**: Stories tagged by type (AI, crypto, startups, etc.) based on keywords
+- **Comments inline**: Click any story to expand discussion count and dive into comments
+
+---
+
+## For developers
+
+### Tech stack
+
+- **Next.js 16** with TypeScript
+- **Tailwind CSS** for utility styling
+- **Custom fonts**: Playfair Display (headlines), IBM Plex Mono (numbers), Inter (body)
+- **Real-time data**: Connected to Hacker News Firebase API
+
+### Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # Start local server at http://localhost:3000
+npm run build      # Build for production
+npm run lint       # Check code quality
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Deployment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Runs on personal Ubuntu homeserver with Nginx reverse proxy + SSL.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Domain: `news.irrssue.com`
+- Process manager: PM2
+- Live at: https://news.irrssue.com
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Design principles
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- No component libraries — hand-crafted CSS
+- Fast and minimal
+- Dark only (no light mode)
+- Keyboard & mouse friendly
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Built with [Next.js](https://nextjs.org).
