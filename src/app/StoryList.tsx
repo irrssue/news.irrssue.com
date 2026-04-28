@@ -306,9 +306,9 @@ function StoryRow({
               fontFamily: "var(--font-mono)",
             }}
           >
-            <span style={{ color: "#4a4a4a" }}>{domain}</span>
-            <span style={{ color: "#2e2e2e" }}> · by </span>
-            <span style={{ color: "#505050" }}>{story.by}</span>
+            <span style={{ color: "#6f6f6f" }}>{domain}</span>
+            <span style={{ color: "#454545" }}> · by </span>
+            <span style={{ color: "#787878" }}>{story.by}</span>
           </div>
         </div>
 
