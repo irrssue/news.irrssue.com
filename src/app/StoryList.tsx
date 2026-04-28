@@ -386,7 +386,7 @@ export default function StoryList({ stories }: { stories: HNItem[] }) {
           style={{
             fontSize: 11,
             fontWeight: 500,
-            color: "#888",
+            color: "#cccccc",
             fontFamily: "var(--font-inter)",
             letterSpacing: "0.08em",
             textTransform: "uppercase",
