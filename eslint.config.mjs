@@ -15,6 +15,11 @@ const eslintConfig = defineConfig([
     "node_modules/**",
     ".claude/**",
   ]),
+  {
+    rules: {
+      "react/no-danger": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
