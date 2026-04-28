@@ -44,7 +44,7 @@ function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) 
             fontFamily: "var(--font-mono)",
             fontSize: 11,
             fontWeight: 600,
-            color: "#777",
+            color: "#b3b3b3",
           }}
         >
           {comment.by}
