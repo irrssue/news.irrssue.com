@@ -75,7 +75,6 @@ function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) 
               color: "#b8b8b8",
               fontFamily: "var(--font-inter)",
             }}
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: sanitizeHNHtml(comment.text) }}
           />
 
