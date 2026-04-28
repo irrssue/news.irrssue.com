@@ -13,44 +13,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install cloudflared
-        run: |
-          curl -fsSL https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o cloudflared.deb
-          sudo dpkg -i cloudflared.deb
-          cloudflared --version
-
-      - name: Configure SSH for cloudflared access
-        run: |
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          cat >> ~/.ssh/config <<'EOF'
-          Host ssh.irrssue.com
-            HostName ssh.irrssue.com
-            User irrssue
-            ProxyCommand cloudflared access ssh --hostname %h
-            StrictHostKeyChecking no
-            UserKnownHostsFile /dev/null
-            ServerAliveInterval 30
-          EOF
-          chmod 600 ~/.ssh/config
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Write SSH private key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
 
       - name: Deploy
-        env:
-          CF_ACCESS_CLIENT_ID: ${{ secrets.CF_ACCESS_CLIENT_ID }}
-          CF_ACCESS_CLIENT_SECRET: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
         run: |
-          ssh -i ~/.ssh/id_ed25519 irrssue@ssh.irrssue.com bash -s <<'EOF'
+          ssh -i ~/.ssh/id_ed25519 \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            irrssue@100.100.200.29 bash -s <<'SSHEOF'
           set -euo pipefail
           cd ~/minimal-hackernews
           git pull --ff-only
           npm ci
           npm run build
           pm2 restart hackernews
-          EOF
+          SSHEOF
