@@ -264,7 +264,7 @@ function StoryRow({
             style={{
               fontFamily: "var(--font-mono)",
               fontSize: 10,
-              color: "#3d3d3d",
+              color: "#5c5c5c",
               marginTop: 5,
               lineHeight: 1.3,
             }}
@@ -302,7 +302,7 @@ function StoryRow({
           <div
             style={{
               fontSize: 11,
-              color: "#3d3d3d",
+              color: "#5c5c5c",
               fontFamily: "var(--font-mono)",
             }}
           >
