@@ -53,13 +53,13 @@ function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) 
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: 10,
-            color: "#3a3a3a",
+            color: "#575757",
           }}
         >
           {age}
         </span>
         {collapsed && (
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#3a3a3a" }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "#575757" }}>
             [+]
           </span>
         )}
