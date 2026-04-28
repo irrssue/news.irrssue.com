@@ -372,25 +372,6 @@ export default function StoryList({ stories }: { stories: HNItem[] }) {
 
   return (
     <>
-      {/* Stats bar */}
-      <div
-        style={{
-          display: "flex",
-          gap: 20,
-          marginBottom: 18,
-          fontSize: 12,
-          fontFamily: "var(--font-mono)",
-          color: "#444",
-        }}
-      >
-        <span>
-          <span style={{ color: "#aaa" }}>{stories.length}</span> links
-        </span>
-        <span>
-          updated <span style={{ color: "#aaa" }}>live</span>
-        </span>
-      </div>
-
       {/* Section header */}
       <div
         style={{
