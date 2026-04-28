@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { HNItem, HNComment, getAge, getDomain, fetchComments } from "./hn";
 
 // HN API returns HTML with <p>, <a>, <i>, <b>, <pre>, <code>
