@@ -327,7 +327,7 @@ function StoryRow({
                 fontFamily: "var(--font-mono)",
                 fontSize: 17,
                 fontWeight: 500,
-                color: "#666",
+                color: "#999999",
                 lineHeight: 1,
                 transition: "color 0.1s",
               }}
