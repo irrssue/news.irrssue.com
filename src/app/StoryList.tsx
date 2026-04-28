@@ -160,7 +160,7 @@ function CommentsPanel({
             ((e.currentTarget as HTMLElement).style.color = "#888")
           }
           onMouseLeave={(e) =>
-            ((e.currentTarget as HTMLElement).style.color = "#444")
+            ((e.currentTarget as HTMLElement).style.color = "#666666")
           }
         >
           close ✕
