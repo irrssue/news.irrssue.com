@@ -30,7 +30,7 @@ export default async function Home() {
         <p
           style={{
             fontSize: 13,
-            color: "#555",
+            color: "#808080",
             fontFamily: "var(--font-inter)",
             lineHeight: 1.5,
           }}
