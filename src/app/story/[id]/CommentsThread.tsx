@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { HNComment, getAge } from "../../hn";
 
-// HN API returns limited HTML subset: <p><a><i><b><pre><code>
-// Strip anything executable — same approach as StoryList.tsx
 function sanitizeHNHtml(html: string): string {
   return html
     .replace(/<script[\s\S]*?<\/script>/gi, "")
@@ -15,130 +13,114 @@ function sanitizeHNHtml(html: string): string {
     .replace(/javascript:/gi, "");
 }
 
-function ActionBtn({ children }: { children: React.ReactNode }) {
+function countDescendants(c: HNComment): number {
+  return c.children.reduce((s, ch) => s + 1 + countDescendants(ch), 0);
+}
+
+function PointArrows({ count }: { count: number }) {
+  const [v, setV] = useState(0);
+  const display = count + v;
   return (
-    <button
-      style={{
-        background: "none",
-        border: "none",
-        cursor: "pointer",
-        padding: 0,
-        fontFamily: "var(--font-mono)",
-        fontSize: 11,
-        color: "#3a3a3a",
-        transition: "color 0.1s",
-      }}
-      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#777")}
-      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#3a3a3a")}
-    >
-      {children}
-    </button>
+    <span className="vote">
+      <button
+        type="button"
+        className={"arrow" + (v === 1 ? " on" : "")}
+        onClick={() => setV(v === 1 ? 0 : 1)}
+        aria-label="upvote"
+      >
+        <svg viewBox="0 0 16 16" width="14" height="14">
+          <path d="M8 3l5 6H9v4H7V9H3z" fill="currentColor" />
+        </svg>
+      </button>
+      <span className="count">{display}</span>
+      <button
+        type="button"
+        className={"arrow" + (v === -1 ? " on" : "")}
+        onClick={() => setV(v === -1 ? 0 : -1)}
+        aria-label="downvote"
+      >
+        <svg viewBox="0 0 16 16" width="14" height="14">
+          <path d="M8 13L3 7h4V3h2v4h4z" fill="currentColor" />
+        </svg>
+      </button>
+    </span>
   );
 }
 
 function CommentNode({
   comment,
-  depth,
   isOp,
+  storyAuthor,
 }: {
   comment: HNComment;
-  depth: number;
   isOp: boolean;
+  storyAuthor: string;
 }) {
   const [collapsed, setCollapsed] = useState(false);
   const age = getAge(comment.time);
+  const hidden = useMemo(() => countDescendants(comment), [comment]);
+  const points = (comment as HNComment & { score?: number }).score ?? 0;
+  const safeHtml = useMemo(() => sanitizeHNHtml(comment.text), [comment.text]);
 
   return (
-    <div
-      style={{
-        paddingLeft: depth > 0 ? 20 : 0,
-        borderLeft: depth > 0 ? "1px solid #1c1c1c" : "none",
-        marginLeft: depth > 0 ? 4 : 0,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          marginBottom: collapsed ? 0 : 8,
-        }}
-      >
+    <div className={"comment" + (collapsed ? " collapsed" : "")}>
+      <div className="chead-row">
         <button
+          type="button"
+          className="toggle"
           onClick={() => setCollapsed(!collapsed)}
-          style={{
-            background: "none",
-            border: "1px solid #242424",
-            borderRadius: 2,
-            cursor: "pointer",
-            width: 16,
-            height: 16,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 0,
-            flexShrink: 0,
-            color: "#444",
-            fontFamily: "var(--font-mono)",
-            fontSize: 11,
-            lineHeight: 1,
-          }}
-          onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#444")}
-          onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.borderColor = "#242424")}
+          aria-label="toggle"
         >
           {collapsed ? "+" : "−"}
         </button>
-
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 500, color: "#888" }}>
-          {comment.by}
-        </span>
-
-        {isOp && (
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 9,
-              fontWeight: 500,
-              color: "#888",
-              background: "#1a1a1a",
-              border: "1px solid #2a2a2a",
-              borderRadius: 2,
-              padding: "1px 4px",
-              letterSpacing: "0.05em",
-            }}
-          >
-            OP
-          </span>
+        <span className={"author" + (isOp ? " op" : "")}>{comment.by}</span>
+        <span className="dot">·</span>
+        <span className="ago">{age}</span>
+        {collapsed && (
+          <>
+            <span className="dot">·</span>
+            <span className="summary">{hidden} hidden</span>
+          </>
         )}
-
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#333" }}>·</span>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#3a3a3a" }}>{age}</span>
       </div>
 
       {!collapsed && (
         <>
           <div
-            style={{
-              fontSize: 13.5,
-              lineHeight: 1.7,
-              color: "#b0b0b0",
-              fontFamily: "var(--font-inter)",
-              marginBottom: 10,
-            }}
-            dangerouslySetInnerHTML={{ __html: sanitizeHNHtml(comment.text) }}
+            className="body"
+            dangerouslySetInnerHTML={{ __html: safeHtml }}
           />
 
-          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: comment.children.length > 0 ? 16 : 0 }}>
-            <ActionBtn>↑ reply</ActionBtn>
-            <ActionBtn>share</ActionBtn>
-            <ActionBtn>save</ActionBtn>
-            <ActionBtn>report</ActionBtn>
+          <div className="actions">
+            <PointArrows count={points} />
+            <button type="button">
+              <svg
+                viewBox="0 0 16 16"
+                width="12"
+                height="12"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              >
+                <path d="M9 4L4 8l5 4" />
+                <path d="M4 8h6a3 3 0 0 1 3 3v1" />
+              </svg>
+              reply
+            </button>
+            <button type="button">share</button>
+            <button type="button">save</button>
+            <button type="button">report</button>
           </div>
 
           {comment.children.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div className="children">
               {comment.children.map((child) => (
-                <CommentNode key={child.id} comment={child} depth={depth + 1} isOp={false} />
+                <CommentNode
+                  key={child.id}
+                  comment={child}
+                  isOp={child.by === storyAuthor}
+                  storyAuthor={storyAuthor}
+                />
               ))}
             </div>
           )}
@@ -172,114 +154,50 @@ export default function CommentsThread({
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 12,
-          marginBottom: 20,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-          <h2
-            style={{
-              fontFamily: "var(--font-playfair)",
-              fontSize: 22,
-              fontWeight: 700,
-              color: "#e2e2e2",
-              margin: 0,
-            }}
-          >
-            Discussion
-          </h2>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#444" }}>
-            {totalCount} comments
-          </span>
-        </div>
-
-        <div style={{ display: "flex", gap: 4 }}>
+      <div className="chead">
+        <h2>
+          Discussion <span className="n">{totalCount} comments</span>
+        </h2>
+        <div className="sort">
           {sorts.map((s) => (
-            <button
+            <span
               key={s}
+              className={"chip" + (s === sort ? " on" : "")}
               onClick={() => setSort(s)}
-              style={{
-                background: sort === s ? "#1a1a1a" : "none",
-                border: sort === s ? "1px solid #2a2a2a" : "1px solid transparent",
-                borderRadius: 3,
-                cursor: "pointer",
-                padding: "3px 10px",
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                color: sort === s ? "#aaa" : "#444",
-                transition: "all 0.1s",
-              }}
-              onMouseEnter={(e) => { if (sort !== s) (e.currentTarget as HTMLElement).style.color = "#777"; }}
-              onMouseLeave={(e) => { if (sort !== s) (e.currentTarget as HTMLElement).style.color = "#444"; }}
             >
               {s}
-            </button>
+            </span>
           ))}
         </div>
       </div>
 
-      <div style={{ border: "1px solid #1e1e1e", borderRadius: 4, marginBottom: 32, overflow: "hidden" }}>
-        <textarea
-          placeholder="Add to the discussion..."
-          style={{
-            width: "100%",
-            background: "#0a0a0a",
-            border: "none",
-            borderBottom: "1px solid #1a1a1a",
-            color: "#888",
-            fontFamily: "var(--font-inter)",
-            fontSize: 13.5,
-            lineHeight: 1.6,
-            padding: "14px 16px",
-            resize: "none",
-            minHeight: 80,
-            outline: "none",
-          }}
-        />
-        <div
-          style={{
-            background: "#080808",
-            padding: "10px 14px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-mono)", fontSize: 11, color: "#333" }}>
-            <kbd style={{ background: "#111", border: "1px solid #222", borderRadius: 2, padding: "1px 5px", fontSize: 10, color: "#444" }}>⌘</kbd>
-            <kbd style={{ background: "#111", border: "1px solid #222", borderRadius: 2, padding: "1px 5px", fontSize: 10, color: "#444" }}>↵</kbd>
-            <span>to post · markdown supported</span>
-          </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <button style={{ background: "none", border: "1px solid #222", borderRadius: 3, cursor: "pointer", padding: "4px 12px", fontFamily: "var(--font-mono)", fontSize: 11, color: "#444" }}>
+      <div className="composer">
+        <textarea placeholder="Add to the discussion…" rows={2} />
+        <div className="row">
+          <span className="hint">
+            <kbd>⌘</kbd>
+            <kbd>↵</kbd> to post · markdown supported
+          </span>
+          <div>
+            <button type="button" className="ghost">
               cancel
             </button>
-            <button style={{ background: "#1a1a1a", border: "1px solid #2a2a2a", borderRadius: 3, cursor: "pointer", padding: "4px 12px", fontFamily: "var(--font-mono)", fontSize: 11, color: "#888" }}>
-              comment
-            </button>
+            <button type="button">comment</button>
           </div>
         </div>
       </div>
 
       {sorted.length === 0 ? (
-        <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "#333", textAlign: "center", padding: "40px 0" }}>
-          no comments yet
-        </div>
+        <div className="empty-thread">no comments yet</div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {sorted.map((c, i) => (
-            <div key={c.id}>
-              <CommentNode comment={c} depth={0} isOp={c.by === storyAuthor} />
-              {i < sorted.length - 1 && (
-                <div style={{ height: 1, background: "#111", marginTop: 24 }} />
-              )}
-            </div>
+        <div className="thread">
+          {sorted.map((c) => (
+            <CommentNode
+              key={c.id}
+              comment={c}
+              isOp={c.by === storyAuthor}
+              storyAuthor={storyAuthor}
+            />
           ))}
         </div>
       )}
