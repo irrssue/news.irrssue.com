@@ -313,17 +313,14 @@ function StoryRow({
           </div>
         </div>
 
-        {/* Comments toggle */}
+        {/* Comments link */}
         <div style={{ textAlign: "right", paddingTop: 2 }}>
-          <button
-            onClick={onToggleComments}
+          <Link
+            href={`/story/${story.id}`}
             style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
+              display: "block",
+              textDecoration: "none",
               textAlign: "right",
-              width: "100%",
             }}
           >
             <div
@@ -331,7 +328,7 @@ function StoryRow({
                 fontFamily: "var(--font-mono)",
                 fontSize: 17,
                 fontWeight: 500,
-                color: expanded ? "#aaa" : "#666",
+                color: "#666",
                 lineHeight: 1,
                 transition: "color 0.1s",
               }}
@@ -339,8 +336,7 @@ function StoryRow({
                 ((e.currentTarget as HTMLElement).style.color = "#aaa")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.color =
-                  expanded ? "#aaa" : "#666")
+                ((e.currentTarget as HTMLElement).style.color = "#666")
               }
             >
               {story.descendants ?? 0}
@@ -349,14 +345,14 @@ function StoryRow({
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: 10,
-                color: expanded ? "#555" : "#333",
+                color: "#333",
                 marginTop: 5,
                 transition: "color 0.1s",
               }}
             >
               comments
             </div>
-          </button>
+          </Link>
         </div>
       </div>
 
