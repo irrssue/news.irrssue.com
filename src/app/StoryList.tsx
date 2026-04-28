@@ -135,7 +135,7 @@ function CommentsPanel({
           style={{
             fontFamily: "var(--font-mono)",
             fontSize: 11,
-            color: "#555",
+            color: "#808080",
             letterSpacing: "0.06em",
             textTransform: "uppercase",
           }}
