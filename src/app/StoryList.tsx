@@ -335,7 +335,7 @@ function StoryRow({
                 ((e.currentTarget as HTMLElement).style.color = "#aaa")
               }
               onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.color = "#666")
+                ((e.currentTarget as HTMLElement).style.color = "#999999")
               }
             >
               {story.descendants ?? 0}
