@@ -178,7 +178,7 @@ export default function CommentsThread({
             <kbd>⌘</kbd>
             <kbd>↵</kbd> to post · markdown supported
           </span>
-          <div>
+          <div style={{ display: "flex", gap: "6px", flexShrink: 0 }}>
             <button type="button" className="ghost">
               cancel
             </button>
