@@ -409,6 +409,19 @@ a { color: inherit; text-decoration: none; }
   font-style: italic;
 }
 
+/* Front page story row */
+.pts-score {
+  font-family: var(--font-mono), monospace;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  color: #d0d0d0;
+  letter-spacing: -0.02em;
+}
+@media (max-width: 600px) {
+  .pts-score { font-size: 18px; }
+}
+
 .empty-thread {
   font-family: var(--font-mono), monospace;
   font-size: 12px;
