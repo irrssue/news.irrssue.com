@@ -248,16 +248,7 @@ function StoryRow({
       >
         {/* Points */}
         <div style={{ textAlign: "right", paddingTop: 2 }}>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 30,
-              fontWeight: 500,
-              lineHeight: 1,
-              color: "#d0d0d0",
-              letterSpacing: "-0.02em",
-            }}
-          >
+          <div className="pts-score">
             {story.score}
           </div>
           <div
