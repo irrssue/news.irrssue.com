@@ -237,15 +237,7 @@ function StoryRow({
         borderBottom: isLast && !expanded ? "none" : "1px solid #161616",
       }}
     >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "76px 1fr 56px",
-          gap: "0 24px",
-          padding: "22px 0",
-          alignItems: "start",
-        }}
-      >
+      <div className="story-grid">
         {/* Points */}
         <div style={{ textAlign: "right", paddingTop: 2 }}>
           <div className="pts-score">
