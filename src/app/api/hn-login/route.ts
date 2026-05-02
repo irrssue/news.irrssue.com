@@ -17,11 +17,11 @@ export async function POST(req: NextRequest) {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: body.toString(),
-    redirect: "manual",
   });
 
-  // HN redirects on success, stays on login page on failure
-  const isSuccess = res.status === 302 || res.status === 301;
+  const html = await res.text();
+  // On failure HN re-renders the login form; on success it doesn't
+  const isSuccess = !html.includes('name="pw"');
 
   return NextResponse.json({ ok: isSuccess });
 }
