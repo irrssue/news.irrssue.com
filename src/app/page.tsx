@@ -41,6 +41,7 @@ export default async function Home() {
       </div>
 
       <StoryList stories={stories} />
+      <ProfileButton />
     </main>
   );
 }
