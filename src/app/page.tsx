@@ -1,5 +1,6 @@
 import { fetchTopStories } from "./hn";
 import StoryList from "./StoryList";
+import ProfileButton from "./ProfileButton";
 
 export default async function Home() {
   const stories = await fetchTopStories(30);
