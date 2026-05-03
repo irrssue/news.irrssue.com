@@ -37,8 +37,25 @@ export function getDomain(url?: string): string {
   }
 }
 
-export async function fetchTopStories(count = 30): Promise<HNItem[]> {
-  const idsRes = await fetch(`${BASE}/topstories.json`, {
+export type Feed =
+  | "top"
+  | "new"
+  | "best"
+  | "ask"
+  | "show"
+  | "job";
+
+const FEED_ENDPOINT: Record<Feed, string> = {
+  top: "topstories",
+  new: "newstories",
+  best: "beststories",
+  ask: "askstories",
+  show: "showstories",
+  job: "jobstories",
+};
+
+export async function fetchStories(feed: Feed, count = 30): Promise<HNItem[]> {
+  const idsRes = await fetch(`${BASE}/${FEED_ENDPOINT[feed]}.json`, {
     next: { revalidate: 300 },
   });
   const ids: number[] = await idsRes.json();
@@ -53,6 +70,10 @@ export async function fetchTopStories(count = 30): Promise<HNItem[]> {
   );
 
   return items.filter(Boolean);
+}
+
+export async function fetchTopStories(count = 30): Promise<HNItem[]> {
+  return fetchStories("top", count);
 }
 
 export async function fetchStory(id: number): Promise<HNItem | null> {
