@@ -43,6 +43,12 @@ export default async function StoryPage({ params }: { params: Promise<{ id: stri
               story.title
             )}
           </h1>
+          {story.text ? (
+            <div
+              className="story-text"
+              dangerouslySetInnerHTML={{ __html: sanitizeHNHtml(story.text) }}
+            />
+          ) : null}
           <div className="src">
             {domain}
             <span className="arrow">·</span>
