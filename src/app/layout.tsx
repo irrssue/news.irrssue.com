@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fraunces.variable} ${mono.variable} ${inter.variable}`}>
       <body className="min-h-screen">
-        <AuthProvider>{children}</AuthProvider>
+        {children}
       </body>
     </html>
   );
