@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { HNItem } from "./hn";
 import InfiniteList from "./InfiniteList";
 
@@ -21,6 +22,17 @@ export default function StoryList({
   feed?: string;
 }) {
   const [count, setCount] = useState(stories.length);
+  const [pending, startTransition] = useTransition();
+  const [pendingRange, setPendingRange] = useState<string | null>(null);
+  const router = useRouter();
+
+  function handleRangeClick(k: "today" | "week" | "month" | "all") {
+    if (k === range) return;
+    setPendingRange(k);
+    startTransition(() => {
+      router.push(k === "today" ? "/" : `/?t=${k}`);
+    });
+  }
 
   return (
     <>
@@ -31,26 +43,32 @@ export default function StoryList({
         </div>
         {showRangeFilter && (
           <div className="filters">
-            {(["today", "week", "month", "all"] as const).map((k) => (
-              <Link
-                key={k}
-                href={k === "today" ? "/" : `/?t=${k}`}
-                className={range === k ? "on" : ""}
-              >
-                {k === "all" ? "all-time" : k}
-              </Link>
-            ))}
+            {(["today", "week", "month", "all"] as const).map((k) => {
+              const isActive = pending ? pendingRange === k : range === k;
+              return (
+                <button
+                  key={k}
+                  onClick={() => handleRangeClick(k)}
+                  className={isActive ? "on" : ""}
+                  style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                >
+                  {k === "all" ? "all-time" : k}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
 
-      <InfiniteList
-        initialStories={stories}
-        feed={feed}
-        range={range}
-        titleLinksToComments={titleLinksToComments}
-        onCountChange={setCount}
-      />
+      <div style={{ opacity: pending ? 0.4 : 1, transition: "opacity 0.15s" }}>
+        <InfiniteList
+          initialStories={stories}
+          feed={feed}
+          range={range}
+          titleLinksToComments={titleLinksToComments}
+          onCountChange={setCount}
+        />
+      </div>
     </>
   );
 }
