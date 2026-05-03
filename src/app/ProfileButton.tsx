@@ -42,7 +42,7 @@ export default function ProfileButton() {
       const data = await res.json();
       if (data.ok) {
         setUser({ username });
-        setOpen(false);
+        handleClose();
         setPassword("");
       } else {
         setError("Invalid credentials.");
