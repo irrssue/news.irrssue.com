@@ -56,7 +56,7 @@ export default function ProfileButton() {
 
   function handleLogout() {
     setUser(null);
-    setOpen(false);
+    handleClose();
   }
 
   const initials = user ? user.username.slice(0, 2).toLowerCase() : null;
