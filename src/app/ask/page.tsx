@@ -8,7 +8,7 @@ export default async function Ask() {
     <>
       <NavBar />
       <main style={{ maxWidth: 740, margin: "0 auto", padding: "44px 28px 96px" }}>
-        <StoryList stories={stories} label="Ask HN" />
+        <StoryList stories={stories} label="Ask HN" titleLinksToComments />
       </main>
     </>
   );
