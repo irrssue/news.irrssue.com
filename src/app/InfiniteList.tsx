@@ -39,18 +39,23 @@ export default function InfiniteList({
       const res = await fetch(`/api/stories?${params}`);
       const data = await res.json();
       if (!data.stories || data.stories.length === 0) {
+        doneRef.current = true;
         setDone(true);
       } else {
         setStories((prev) => [...prev, ...data.stories]);
         offsetRef.current += data.stories.length;
-        if (data.stories.length < 30) setDone(true);
+        if (data.stories.length < 30) {
+          doneRef.current = true;
+          setDone(true);
+        }
       }
     } catch {
       // silently fail — user can scroll again
     } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
-  }, [loading, done, feed, range]);
+  }, [feed, range]);
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
