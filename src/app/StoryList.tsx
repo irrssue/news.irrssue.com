@@ -18,7 +18,7 @@ function sanitizeHNHtml(html: string): string {
 
 function CommentBadge({ count }: { count: number }) {
   const display = count > 999 ? "999+" : String(count);
-  const fontSize = display.length >= 4 ? 11 : display.length === 3 ? 13 : 14;
+  const fontSize = display.length >= 4 ? 10 : display.length === 3 ? 11 : 12;
 
   return (
     <span
