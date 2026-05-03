@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { HNItem } from "./hn";
 import InfiniteList from "./InfiniteList";
-import StoryRow from "./StoryRow";
 
 export default function StoryList({
   stories,
@@ -21,18 +20,14 @@ export default function StoryList({
   showRangeFilter?: boolean;
   feed?: string;
 }) {
-  const [expandedId, setExpandedId] = useState<number | null>(null);
-
-  function toggleComments(id: number) {
-    setExpandedId((prev) => (prev === id ? null : id));
-  }
+  const [count, setCount] = useState(stories.length);
 
   return (
     <>
       <div className="page-head">
         <div className="lhs">
           <h1>{label}</h1>
-          <span className="meta">{stories.length} links</span>
+          <span className="meta">{count} links</span>
         </div>
         {showRangeFilter && (
           <div className="filters">
