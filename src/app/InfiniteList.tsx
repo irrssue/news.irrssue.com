@@ -26,6 +26,21 @@ export default function InfiniteList({
   const loadingRef = useRef(false);
   const doneRef = useRef(false);
 
+  // Sync when server sends fresh initialStories after range change
+  const prevRangeRef = useRef(range);
+  useEffect(() => {
+    if (range !== prevRangeRef.current) {
+      prevRangeRef.current = range;
+      setStories(initialStories);
+      setDone(false);
+      setExpandedId(null);
+      offsetRef.current = initialStories.length;
+      loadingRef.current = false;
+      doneRef.current = false;
+      onCountChange?.(initialStories.length);
+    }
+  }, [range, initialStories, onCountChange]);
+
   const loadMore = useCallback(async () => {
     if (loadingRef.current || doneRef.current) return;
     loadingRef.current = true;
