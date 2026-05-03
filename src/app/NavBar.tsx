@@ -23,7 +23,7 @@ export default function NavBar() {
 
       <ul className="nav">
         {TABS.map(tab => {
-          const isActive = pathname === tab.href;
+          const isActive = tab.href === "/" ? pathname === "/" : pathname === tab.href;
           return (
             <li key={tab.href}>
               <Link href={tab.href} className={isActive ? "on" : ""}>
