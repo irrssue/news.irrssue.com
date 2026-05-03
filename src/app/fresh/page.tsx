@@ -8,7 +8,7 @@ export default async function Fresh() {
     <>
       <NavBar />
       <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
-        <StoryList stories={stories} label="Fresh" />
+        <StoryList stories={stories} label="Fresh" feed="new" />
       </main>
     </>
   );
