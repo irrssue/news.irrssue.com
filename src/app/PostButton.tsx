@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "./AuthContext";
 
 export default function PostButton() {
+  const { user, openLogin } = useAuth();
   const [open, setOpen] = useState(false);
+  const [needLogin, setNeedLogin] = useState(false);
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
   const [text, setText] = useState("");
