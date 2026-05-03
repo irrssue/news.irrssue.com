@@ -420,6 +420,7 @@ export default function StoryList({
             isLast={i === stories.length - 1}
             expanded={expandedId === story.id}
             onToggleComments={() => toggleComments(story.id)}
+            titleLinksToComments={titleLinksToComments}
           />
         ))}
       </div>
