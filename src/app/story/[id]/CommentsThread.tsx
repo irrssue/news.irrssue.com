@@ -1,17 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { HNComment, getAge } from "../../hn";
-
-function sanitizeHNHtml(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
-    .replace(/<img[^>]*>/gi, "")
-    .replace(/on\w+="[^"]*"/gi, "")
-    .replace(/on\w+='[^']*'/gi, "")
-    .replace(/javascript:/gi, "");
-}
+import { HNComment, getAge, sanitizeHNHtml } from "../../hn";
 
 function countDescendants(c: HNComment): number {
   return c.children.reduce((s, ch) => s + 1 + countDescendants(ch), 0);
