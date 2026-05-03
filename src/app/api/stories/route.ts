@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchStories, fetchStoriesByRange, Feed, TimeRange } from "../../hn";
+import { fetchStories, fetchStoriesByRange, Feed, TimeRange, HNItem } from "../../hn";
 
 const VALID_FEEDS: Feed[] = ["top", "new", "best", "ask", "show", "job"];
 const VALID_RANGES: TimeRange[] = ["today", "week", "month", "all"];
