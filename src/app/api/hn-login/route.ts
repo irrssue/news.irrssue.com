@@ -15,13 +15,18 @@ export async function POST(req: NextRequest) {
 
   const res = await fetch("https://news.ycombinator.com/login", {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "User-Agent": "Mozilla/5.0 (compatible; minimal-hackernews)",
+    },
     body: body.toString(),
+    redirect: "manual",
   });
 
-  const html = await res.text();
-  // On failure HN re-renders the login form; on success it doesn't
-  const isSuccess = !html.includes('name="pw"');
+  // HN returns 302 on success (redirect to /news), 200 with re-rendered form on failure.
+  const setCookie = res.headers.get("set-cookie") ?? "";
+  const isSuccess =
+    (res.status >= 300 && res.status < 400) || /\buser=/.test(setCookie);
 
   return NextResponse.json({ ok: isSuccess });
 }
