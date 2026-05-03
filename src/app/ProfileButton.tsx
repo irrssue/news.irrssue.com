@@ -67,14 +67,14 @@ export default function ProfileButton() {
         onClick={() => setOpen(true)}
         title={user ? user.username : "Sign in with HN"}
         style={{
-          width: 32,
-          height: 32,
+          width: 28,
+          height: 28,
           borderRadius: "50%",
-          background: "#1e1e1e",
-          border: "1px solid #2a2a2a",
-          color: user ? "#c9a96e" : "#888",
+          background: "linear-gradient(135deg, #2a2a26 0%, #1a1a18 100%)",
+          border: "1px solid var(--rule-2)",
+          color: user ? "var(--op)" : "var(--ink-3)",
           fontFamily: "var(--font-mono)",
-          fontSize: 12,
+          fontSize: 10,
           cursor: "pointer",
           display: "flex",
           alignItems: "center",
