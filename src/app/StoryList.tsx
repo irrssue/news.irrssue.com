@@ -18,7 +18,7 @@ function sanitizeHNHtml(html: string): string {
 
 function CommentBadge({ count }: { count: number }) {
   const display = count > 999 ? "999+" : String(count);
-  const fontSize = display.length >= 4 ? 8 : display.length === 3 ? 9 : 10;
+  const fontSize = display.length >= 4 ? 11 : display.length === 3 ? 13 : 14;
 
   return (
     <span
@@ -27,8 +27,8 @@ function CommentBadge({ count }: { count: number }) {
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        width: 36,
-        height: 32,
+        width: 40,
+        height: 40,
         color: "#999999",
         transition: "color 0.1s",
       }}
@@ -40,18 +40,18 @@ function CommentBadge({ count }: { count: number }) {
       }
     >
       <svg
-        width="36"
-        height="32"
-        viewBox="0 0 36 32"
+        width="40"
+        height="40"
+        viewBox="0 0 40 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         style={{ position: "absolute", inset: 0 }}
         aria-hidden="true"
       >
         <path
-          d="M4 3h28a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2H14l-7 5v-5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"
+          d="M9 5h22a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H17l-6 6a1 1 0 0 1-1.7-.7V28H9a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4z"
           stroke="currentColor"
-          strokeWidth="1.25"
+          strokeWidth="2"
           strokeLinejoin="round"
           fill="none"
         />
@@ -63,7 +63,7 @@ function CommentBadge({ count }: { count: number }) {
           fontSize,
           fontWeight: 500,
           lineHeight: 1,
-          marginTop: -4,
+          marginTop: -6,
         }}
       >
         {display}
