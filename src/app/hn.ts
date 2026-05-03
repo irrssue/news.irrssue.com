@@ -24,14 +24,15 @@ export interface HNComment {
   children: HNComment[];
 }
 
+const ALLOWED_TAGS = ["p", "a", "i", "em", "b", "strong", "code", "pre", "br"];
+const ALLOWED_ATTR = ["href", "rel", "target"];
+
 export function sanitizeHNHtml(html: string): string {
-  return html
-    .replace(/<script[\s\S]*?<\/script>/gi, "")
-    .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
-    .replace(/<img[^>]*>/gi, "")
-    .replace(/on\w+="[^"]*"/gi, "")
-    .replace(/on\w+='[^']*'/gi, "")
-    .replace(/javascript:/gi, "");
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS,
+    ALLOWED_ATTR,
+    ALLOWED_URI_REGEXP: /^(?:https?:|mailto:|#)/i,
+  });
 }
 
 export function getAge(unixTime: number): string {
