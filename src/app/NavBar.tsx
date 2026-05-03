@@ -6,6 +6,7 @@ import ProfileButton from "./ProfileButton";
 import PostButton from "./PostButton";
 
 const TABS = [
+  { label: "front page", href: "/" },
   { label: "fresh", href: "/fresh" },
   { label: "threads", href: "/threads" },
   { label: "archive", href: "/archive" },
