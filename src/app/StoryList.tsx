@@ -363,9 +363,11 @@ function StoryRow({
 export default function StoryList({
   stories,
   label = "Front page",
+  titleLinksToComments,
 }: {
   stories: HNItem[];
   label?: string;
+  titleLinksToComments?: boolean;
 }) {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
