@@ -8,6 +8,7 @@ export interface HNItem {
   score: number;
   descendants?: number;
   time: number;
+  text?: string;
 }
 
 export interface HNComment {
