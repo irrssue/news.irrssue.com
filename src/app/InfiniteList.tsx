@@ -77,6 +77,7 @@ export default function InfiniteList({
             story={story}
             expanded={expandedId === story.id}
             onToggleComments={() => toggleComments(story.id)}
+            titleLinksToComments={titleLinksToComments}
           />
         ))}
       </div>
