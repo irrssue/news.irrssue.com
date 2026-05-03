@@ -284,13 +284,16 @@ export default function StoryList({
   stories,
   label = "Front page",
   titleLinksToComments,
+  range = "today",
+  showRangeFilter = false,
 }: {
   stories: HNItem[];
   label?: string;
   titleLinksToComments?: boolean;
+  range?: "today" | "week" | "month" | "all";
+  showRangeFilter?: boolean;
 }) {
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [filter, setFilter] = useState<"today" | "week" | "month" | "all">("today");
 
   function toggleComments(id: number) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -303,21 +306,19 @@ export default function StoryList({
           <h1>{label}</h1>
           <span className="meta">{stories.length} links</span>
         </div>
-        <div className="filters">
-          {(["today", "week", "month", "all"] as const).map((k) => (
-            <a
-              key={k}
-              href="#"
-              className={filter === k ? "on" : ""}
-              onClick={(e) => {
-                e.preventDefault();
-                setFilter(k);
-              }}
-            >
-              {k === "all" ? "all-time" : k}
-            </a>
-          ))}
-        </div>
+        {showRangeFilter && (
+          <div className="filters">
+            {(["today", "week", "month", "all"] as const).map((k) => (
+              <Link
+                key={k}
+                href={k === "today" ? "/" : `/?t=${k}`}
+                className={range === k ? "on" : ""}
+              >
+                {k === "all" ? "all-time" : k}
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="listA">
