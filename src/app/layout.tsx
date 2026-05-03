@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, IBM_Plex_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "./AuthContext";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
