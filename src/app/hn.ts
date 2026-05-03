@@ -87,6 +87,68 @@ export async function fetchTopStories(count = 30): Promise<HNItem[]> {
   return fetchStories("top", count);
 }
 
+export type TimeRange = "today" | "week" | "month" | "all";
+
+const ALGOLIA = "https://hn.algolia.com/api/v1";
+
+interface AlgoliaHit {
+  objectID: string;
+  title: string | null;
+  url: string | null;
+  author: string;
+  points: number | null;
+  num_comments: number | null;
+  created_at_i: number;
+  story_text?: string | null;
+}
+
+function rangeStart(range: TimeRange): number | null {
+  const now = Math.floor(Date.now() / 1000);
+  switch (range) {
+    case "today": return now - 86400;
+    case "week": return now - 86400 * 7;
+    case "month": return now - 86400 * 30;
+    case "all": return null;
+  }
+}
+
+export async function fetchStoriesByRange(
+  range: TimeRange,
+  count = 30
+): Promise<HNItem[]> {
+  if (range === "today") {
+    return fetchStories("top", count);
+  }
+
+  const start = rangeStart(range);
+  const params = new URLSearchParams({
+    tags: "story",
+    hitsPerPage: String(count),
+  });
+  if (start !== null) {
+    params.set("numericFilters", `created_at_i>${start}`);
+  }
+
+  const res = await fetch(`${ALGOLIA}/search?${params}`, {
+    next: { revalidate: 300 },
+  });
+  const data = await res.json();
+  const hits: AlgoliaHit[] = data?.hits ?? [];
+
+  return hits
+    .filter((h) => h.title)
+    .map((h) => ({
+      id: Number(h.objectID),
+      title: h.title!,
+      url: h.url ?? undefined,
+      by: h.author,
+      score: h.points ?? 0,
+      descendants: h.num_comments ?? 0,
+      time: h.created_at_i,
+      text: h.story_text ?? undefined,
+    }));
+}
+
 export async function fetchStory(id: number): Promise<HNItem | null> {
   const res = await fetch(`${BASE}/item/${id}.json`, { next: { revalidate: 300 } });
   const item = await res.json();
