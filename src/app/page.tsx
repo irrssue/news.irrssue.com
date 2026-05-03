@@ -1,9 +1,20 @@
-import { fetchTopStories } from "./hn";
+import { fetchStoriesByRange, TimeRange } from "./hn";
 import StoryList from "./StoryList";
 import NavBar from "./NavBar";
 
-export default async function Home() {
-  const stories = await fetchTopStories(30);
+const VALID: TimeRange[] = ["today", "week", "month", "all"];
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ t?: string }>;
+}) {
+  const { t } = await searchParams;
+  const range: TimeRange = VALID.includes(t as TimeRange)
+    ? (t as TimeRange)
+    : "today";
+
+  const stories = await fetchStoriesByRange(range, 30);
 
   return (
     <>
@@ -15,7 +26,7 @@ export default async function Home() {
           padding: "32px 40px 96px",
         }}
       >
-        <StoryList stories={stories} />
+        <StoryList stories={stories} range={range} showRangeFilter />
       </main>
     </>
   );
