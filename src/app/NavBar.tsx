@@ -98,17 +98,7 @@ export default function NavBar() {
           gap: 18,
         }}
       >
-        <a
-          href="#"
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: 13,
-            color: "#bdbdbd",
-            textDecoration: "none",
-          }}
-        >
-          post
-        </a>
+        <PostButton />
         <ProfileButton />
       </div>
     </nav>
