@@ -222,14 +222,32 @@ function StoryRow({
   isLast,
   expanded,
   onToggleComments,
+  titleLinksToComments,
 }: {
   story: HNItem;
   isLast: boolean;
   expanded: boolean;
   onToggleComments: () => void;
+  titleLinksToComments?: boolean;
 }) {
   const age = getAge(story.time);
   const domain = getDomain(story.url);
+
+  const titleStyle = {
+    display: "block",
+    fontSize: 14.5,
+    fontWeight: 500,
+    color: "#dedede",
+    lineHeight: 1.45,
+    fontFamily: "var(--font-inter)",
+    marginBottom: 7,
+    transition: "color 0.1s",
+    textDecoration: "none",
+  } as const;
+  const onEnter = (e: React.MouseEvent<HTMLElement>) =>
+    ((e.currentTarget as HTMLElement).style.color = "#fff");
+  const onLeave = (e: React.MouseEvent<HTMLElement>) =>
+    ((e.currentTarget as HTMLElement).style.color = "#dedede");
 
   return (
     <div
