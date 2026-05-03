@@ -122,6 +122,26 @@ a { color: inherit; text-decoration: none; }
 }
 .story-hero .src b { color: var(--ink-2); font-weight: 400; }
 .story-hero .src .arrow { color: var(--ink-4); margin: 0 6px; }
+.story-hero .story-text {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 14px 0 14px;
+  max-width: 65ch;
+}
+.story-hero .story-text p { margin: 0 0 10px; }
+.story-hero .story-text p:last-child { margin-bottom: 0; }
+.story-hero .story-text a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+.story-hero .story-text pre,
+.story-hero .story-text code {
+  font-family: var(--font-mono), monospace;
+  font-size: 12.5px;
+  background: #141414;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+.story-hero .story-text pre { padding: 10px 12px; overflow-x: auto; }
 .story-hero .blurb {
   font-size: 15px;
   color: var(--ink-2);
