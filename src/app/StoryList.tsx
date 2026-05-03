@@ -276,30 +276,27 @@ function StoryRow({
 
         {/* Title + meta */}
         <div>
-          <a
-            href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "block",
-              fontSize: 14.5,
-              fontWeight: 500,
-              color: "#dedede",
-              lineHeight: 1.45,
-              fontFamily: "var(--font-inter)",
-              marginBottom: 7,
-              transition: "color 0.1s",
-              textDecoration: "none",
-            }}
-            onMouseEnter={(e) =>
-              ((e.currentTarget as HTMLElement).style.color = "#fff")
-            }
-            onMouseLeave={(e) =>
-              ((e.currentTarget as HTMLElement).style.color = "#dedede")
-            }
-          >
-            {story.title}
-          </a>
+          {titleLinksToComments ? (
+            <Link
+              href={`/story/${story.id}`}
+              style={titleStyle}
+              onMouseEnter={onEnter}
+              onMouseLeave={onLeave}
+            >
+              {story.title}
+            </Link>
+          ) : (
+            <a
+              href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={titleStyle}
+              onMouseEnter={onEnter}
+              onMouseLeave={onLeave}
+            >
+              {story.title}
+            </a>
+          )}
           <div
             style={{
               fontSize: 11,
