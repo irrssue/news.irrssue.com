@@ -30,6 +30,7 @@ export default function BookmarkButton({ id, onUnsave }: { id: number; onUnsave?
       next.splice(idx, 1);
     }
     localStorage.setItem(KEY, JSON.stringify(next));
+    window.dispatchEvent(new Event("storage"));
     const nowSaved = idx === -1;
     setSaved(nowSaved);
     if (!nowSaved && onUnsave) onUnsave();
