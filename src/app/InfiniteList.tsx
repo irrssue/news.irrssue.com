@@ -8,10 +8,12 @@ export default function InfiniteList({
   initialStories,
   feed,
   range,
+  titleLinksToComments,
 }: {
   initialStories: HNItem[];
   feed: string;
   range?: string;
+  titleLinksToComments?: boolean;
 }) {
   const [stories, setStories] = useState<HNItem[]>(initialStories);
   const [loading, setLoading] = useState(false);
