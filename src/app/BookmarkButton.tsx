@@ -12,7 +12,7 @@ function getBookmarks(): number[] {
   }
 }
 
-export default function BookmarkButton({ id }: { id: number }) {
+export default function BookmarkButton({ id, onUnsave }: { id: number; onUnsave?: () => void }) {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -30,7 +30,9 @@ export default function BookmarkButton({ id }: { id: number }) {
       next.splice(idx, 1);
     }
     localStorage.setItem(KEY, JSON.stringify(next));
-    setSaved(idx === -1);
+    const nowSaved = idx === -1;
+    setSaved(nowSaved);
+    if (!nowSaved && onUnsave) onUnsave();
   }
 
   return (
