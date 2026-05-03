@@ -95,7 +95,7 @@ export default function ProfileButton() {
 
       {open && (
         <div
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
           style={{
             position: "fixed",
             inset: 0,
