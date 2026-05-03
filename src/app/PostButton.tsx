@@ -140,6 +140,65 @@ export default function PostButton() {
           </div>
         </div>
       )}
+
+      {needLogin && (
+        <div
+          onClick={() => setNeedLogin(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 50,
+          }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{
+              background: "#111",
+              border: "1px solid #2a2a2a",
+              borderRadius: 8,
+              padding: "32px 28px",
+              width: 340,
+            }}
+          >
+            <h2 style={{ fontFamily: "var(--font-playfair)", fontSize: 22, color: "#ececec", marginBottom: 6 }}>
+              Sign in required
+            </h2>
+            <p style={{ fontFamily: "var(--font-inter)", fontSize: 13, color: "#888", marginBottom: 22, lineHeight: 1.5 }}>
+              You need an HN account to submit a post.
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button
+                onClick={() => {
+                  setNeedLogin(false);
+                  openLogin();
+                }}
+                style={submitBtnStyle}
+              >
+                Login
+              </button>
+              <button
+                onClick={() => setNeedLogin(false)}
+                style={{
+                  background: "transparent",
+                  border: "1px solid #2a2a2a",
+                  borderRadius: 4,
+                  padding: "9px 12px",
+                  color: "#888",
+                  fontFamily: "var(--font-inter)",
+                  fontSize: 13,
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
