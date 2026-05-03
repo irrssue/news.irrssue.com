@@ -8,7 +8,7 @@ export default async function Show() {
     <>
       <NavBar />
       <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
-        <StoryList stories={stories} label="Show HN" />
+        <StoryList stories={stories} label="Show HN" feed="show" />
       </main>
     </>
   );
