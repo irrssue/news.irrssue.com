@@ -24,7 +24,7 @@ export default function NavBar() {
         position: "sticky",
         top: 0,
         zIndex: 40,
-        background: "#0c0c0c",
+        background: "var(--bg)",
         borderBottom: "1px solid var(--border)",
         height: 72,
         display: "grid",
