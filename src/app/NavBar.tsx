@@ -27,8 +27,16 @@ const TABS = [
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [hasSaved, setHasSaved] = useState(false);
 
   useEffect(() => { setOpen(false); }, [pathname]);
+
+  useEffect(() => {
+    const update = () => setHasSaved(getSavedCount() > 0);
+    update();
+    window.addEventListener("storage", update);
+    return () => window.removeEventListener("storage", update);
+  }, []);
 
   return (
     <>
