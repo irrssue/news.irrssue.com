@@ -1,14 +1,21 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import ProfileButton from "./ProfileButton";
 
-const TABS = ["fresh", "threads", "archive", "replies", "ask", "show", "work"] as const;
-type Tab = (typeof TABS)[number];
+const TABS = [
+  { label: "fresh", href: "/fresh" },
+  { label: "threads", href: "/threads" },
+  { label: "archive", href: "/archive" },
+  { label: "replies", href: "/replies" },
+  { label: "ask", href: "/ask" },
+  { label: "show", href: "/show" },
+  { label: "work", href: "/work" },
+] as const;
 
 export default function NavBar() {
-  const [active, setActive] = useState<Tab>("fresh");
+  const pathname = usePathname();
 
   return (
     <nav
@@ -53,31 +60,30 @@ export default function NavBar() {
         }}
       >
         {TABS.map(tab => {
-          const isActive = active === tab;
+          const isActive = pathname === tab.href;
           return (
-            <li key={tab}>
-              <button
-                onClick={() => setActive(tab)}
+            <li key={tab.href}>
+              <Link
+                href={tab.href}
                 style={{
-                  background: "none",
-                  border: "none",
+                  display: "inline-block",
                   padding: "4px 0",
-                  cursor: "pointer",
                   fontFamily: "var(--font-mono)",
                   fontSize: 13,
                   color: isActive ? "#ececec" : "#5a5a5a",
                   borderBottom: isActive ? "1px solid #ececec" : "1px solid transparent",
+                  textDecoration: "none",
                   transition: "color 0.15s",
                 }}
                 onMouseEnter={e => {
-                  if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = "#9a9a9a";
+                  if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "#9a9a9a";
                 }}
                 onMouseLeave={e => {
-                  if (!isActive) (e.currentTarget as HTMLButtonElement).style.color = "#5a5a5a";
+                  if (!isActive) (e.currentTarget as HTMLAnchorElement).style.color = "#5a5a5a";
                 }}
               >
-                {tab}
-              </button>
+                {tab.label}
+              </Link>
             </li>
           );
         })}
