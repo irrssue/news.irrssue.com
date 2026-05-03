@@ -8,7 +8,7 @@ export default async function Archive() {
     <>
       <NavBar />
       <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
-        <StoryList stories={stories} label="Archive" />
+        <StoryList stories={stories} label="Archive" feed="best" />
       </main>
     </>
   );
