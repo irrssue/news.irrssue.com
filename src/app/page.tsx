@@ -10,9 +10,9 @@ export default async function Home() {
       <NavBar />
       <main
         style={{
-          maxWidth: 740,
+          maxWidth: 980,
           margin: "0 auto",
-          padding: "44px 28px 96px",
+          padding: "32px 40px 96px",
         }}
       >
         <StoryList stories={stories} />
