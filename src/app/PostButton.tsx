@@ -61,12 +61,16 @@ export default function PostButton() {
         }}
         style={{
           fontFamily: "var(--font-mono)",
-          fontSize: 13,
-          color: "#bdbdbd",
+          fontSize: 11.5,
+          color: "var(--ink)",
           textDecoration: "none",
+          padding: "6px 12px",
+          border: "1px solid var(--rule-2)",
+          borderRadius: 999,
+          lineHeight: 1,
         }}
       >
-        post
+        + post
       </a>
 
       {open && (
