@@ -381,7 +381,7 @@ export default function StoryList({
             textTransform: "uppercase",
           }}
         >
-          Front page
+          {label}
         </span>
         <span
           style={{
