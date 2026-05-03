@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "./AuthContext";
 
 const fraunces = Fraunces({
   variable: "--font-playfair",
