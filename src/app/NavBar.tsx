@@ -26,7 +26,7 @@ export default function NavBar() {
       }}
     >
       <div style={{ justifySelf: "start" }}>
-        <a
+        <Link
           href="/"
           style={{
             fontFamily: "var(--font-playfair)",
@@ -39,7 +39,7 @@ export default function NavBar() {
           }}
         >
           Reads
-        </a>
+        </Link>
       </div>
 
       <ul
