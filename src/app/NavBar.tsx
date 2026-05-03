@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import ProfileButton from "./ProfileButton";
 
 const TABS = ["fresh", "threads", "archive", "replies", "ask", "show", "work"] as const;
