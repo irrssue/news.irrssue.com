@@ -8,10 +8,11 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const feed = searchParams.get("feed") ?? "top";
   const range = searchParams.get("range") ?? "today";
-  const offset = parseInt(searchParams.get("offset") ?? "0", 10);
+  const offsetRaw = parseInt(searchParams.get("offset") ?? "0", 10);
+  const offset = Number.isFinite(offsetRaw) ? Math.max(0, Math.min(offsetRaw, 1000)) : 0;
   const count = 30;
 
-  if (!VALID_FEEDS.includes(feed as Feed) && !VALID_RANGES.includes(range as TimeRange)) {
+  if (!VALID_FEEDS.includes(feed as Feed) || !VALID_RANGES.includes(range as TimeRange)) {
     return NextResponse.json({ error: "invalid params" }, { status: 400 });
   }
 
