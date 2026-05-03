@@ -8,7 +8,7 @@ export default async function Threads() {
     <>
       <NavBar />
       <main style={{ maxWidth: 740, margin: "0 auto", padding: "44px 28px 96px" }}>
-        <StoryList stories={stories} label="Threads" />
+        <StoryList stories={stories} label="Threads" titleLinksToComments />
       </main>
     </>
   );
