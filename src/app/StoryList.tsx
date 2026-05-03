@@ -345,7 +345,13 @@ function StoryRow({
   );
 }
 
-export default function StoryList({ stories }: { stories: HNItem[] }) {
+export default function StoryList({
+  stories,
+  label = "Front page",
+}: {
+  stories: HNItem[];
+  label?: string;
+}) {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   function toggleComments(id: number) {
