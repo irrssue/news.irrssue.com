@@ -13,6 +13,7 @@ const TABS = [
   { label: "archive", href: "/archive" },
   { label: "show", href: "/show" },
   { label: "work", href: "/work" },
+  { label: "saved", href: "/saved" },
 ] as const;
 
 export default function NavBar() {
