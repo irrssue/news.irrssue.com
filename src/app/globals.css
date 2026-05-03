@@ -23,7 +23,7 @@
 * { box-sizing: border-box; }
 
 html, body {
-  background-color: #0a0a0a;
+  background-color: #000000;
   color: var(--ink);
   font-family: var(--font-inter), 'Inter', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
