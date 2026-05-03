@@ -9,11 +9,13 @@ export default function InfiniteList({
   feed,
   range,
   titleLinksToComments,
+  onCountChange,
 }: {
   initialStories: HNItem[];
   feed: string;
   range?: string;
   titleLinksToComments?: boolean;
+  onCountChange?: (n: number) => void;
 }) {
   const [stories, setStories] = useState<HNItem[]>(initialStories);
   const [loading, setLoading] = useState(false);
