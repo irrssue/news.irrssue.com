@@ -53,6 +53,10 @@ export default function PostButton() {
         href="#"
         onClick={e => {
           e.preventDefault();
+          if (!user) {
+            setNeedLogin(true);
+            return;
+          }
           setOpen(true);
         }}
         style={{
