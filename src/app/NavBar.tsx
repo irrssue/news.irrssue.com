@@ -6,6 +6,14 @@ import { useState, useEffect } from "react";
 import ProfileButton from "./ProfileButton";
 import PostButton from "./PostButton";
 
+function getSavedCount(): number {
+  try {
+    return (JSON.parse(localStorage.getItem("hn-bookmarks") ?? "[]") as number[]).length;
+  } catch {
+    return 0;
+  }
+}
+
 const TABS = [
   { label: "front page", href: "/" },
   { label: "fresh", href: "/fresh" },
