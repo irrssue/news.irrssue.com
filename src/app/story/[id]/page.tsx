@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { fetchStory, fetchThreadComments, getAge, getDomain } from "../../hn";
+import { fetchStory, fetchThreadComments, getAge, getDomain, sanitizeHNHtml } from "../../hn";
 import CommentsThread from "./CommentsThread";
 
 export default async function StoryPage({ params }: { params: Promise<{ id: string }> }) {
