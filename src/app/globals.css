@@ -432,31 +432,155 @@ a { color: inherit; text-decoration: none; }
   font-style: italic;
 }
 
-/* Front page story row */
-.story-grid {
-  display: grid;
-  grid-template-columns: 76px 1fr 56px;
-  gap: 0 24px;
-  padding: 22px 0;
-  align-items: start;
+/* === Topbar === */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 40;
 }
+.topbar .brand {
+  font-family: var(--font-playfair), 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--ink);
+  text-decoration: none;
+}
+.topbar .nav {
+  display: flex;
+  gap: 22px;
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.topbar .nav a {
+  color: var(--ink-3);
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.topbar .nav a:hover { color: var(--ink-2); }
+.topbar .nav a.on { color: var(--ink); border-bottom-color: var(--ink); }
+.topbar .right { display: flex; align-items: center; gap: 14px; }
+
 @media (max-width: 600px) {
-  .story-grid {
-    grid-template-columns: 44px 1fr 44px;
-    gap: 0 12px;
-  }
+  .topbar { padding: 14px 20px; }
+  .topbar .nav { gap: 14px; font-size: 11px; }
 }
 
-.pts-score {
-  font-family: var(--font-mono), monospace;
-  font-size: 30px;
-  font-weight: 500;
-  line-height: 1;
-  color: #d0d0d0;
-  letter-spacing: -0.02em;
+/* === Page head === */
+.page-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 0 0 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  flex-wrap: wrap;
+  gap: 14px;
 }
+.page-head .lhs {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.page-head h1 {
+  font-family: var(--font-playfair), 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin: 0;
+  color: var(--ink);
+}
+.page-head .meta {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--ink-3);
+}
+.page-head .filters {
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+}
+.page-head .filters a {
+  color: var(--ink-3);
+  text-decoration: none;
+  transition: color .15s;
+}
+.page-head .filters a:hover { color: var(--ink-2); }
+.page-head .filters a.on { color: var(--ink); }
+
+/* === Direction A — Quiet list === */
+.listA .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 28px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.listA .row:last-child { border-bottom: 0; }
+.listA .ttl {
+  font-family: var(--font-inter), 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 1.35;
+  margin: 0 0 6px;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+.listA .ttl a {
+  color: inherit;
+  text-decoration: none;
+  transition: color .15s;
+}
+.listA .ttl a:hover { color: #fff; }
+.listA .ttl .dom {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--ink-3);
+  margin-left: 8px;
+  font-weight: 400;
+}
+.listA .meta {
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.listA .meta .sep { color: var(--ink-4); }
+.listA .meta b { color: var(--ink-2); font-weight: 500; }
+.listA .cmts {
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  text-align: right;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color .15s;
+}
+.listA .cmts:hover { color: var(--ink); }
+.listA .cmts b { color: var(--ink); font-weight: 500; }
+
 @media (max-width: 600px) {
-  .pts-score { font-size: 18px; }
+  .listA .ttl { font-size: 15.5px; }
+  .listA .ttl .dom { display: block; margin-left: 0; margin-top: 4px; }
+  .listA .row { column-gap: 16px; }
 }
 
 .empty-thread {
