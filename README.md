@@ -46,11 +46,9 @@ Runs on personal Ubuntu homeserver with Nginx reverse proxy + SSL.
 - Process manager: PM2
 - Live at: https://news.irrssue.com
 
-### Login
+### Bookmarks
 
-Click the profile icon (top-right) to sign in with your Hacker News account.
-
-> **Note:** HN doesn't have OAuth, so this is the only available login method. Credentials go directly to HN's server — nothing is stored locally or on this app's servers.
+Click the bookmark icon on any story to save it locally. Saved stories live in your browser's localStorage — nothing leaves your device.
 
 ---
 
