@@ -127,6 +127,7 @@ export default function StoryRow({
   return (
     <>
       <div className="row">
+        <BookmarkButton id={story.id} />
         <div>
           <p className="ttl">
             {titleLinksToComments ? (
