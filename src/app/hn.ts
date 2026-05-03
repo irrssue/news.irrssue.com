@@ -22,6 +22,16 @@ export interface HNComment {
   children: HNComment[];
 }
 
+export function sanitizeHNHtml(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, "")
+    .replace(/<img[^>]*>/gi, "")
+    .replace(/on\w+="[^"]*"/gi, "")
+    .replace(/on\w+='[^']*'/gi, "")
+    .replace(/javascript:/gi, "");
+}
+
 export function getAge(unixTime: number): string {
   const seconds = Math.floor(Date.now() / 1000) - unixTime;
   if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
