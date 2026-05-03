@@ -45,7 +45,7 @@ export default function NavBar() {
             lineHeight: 1,
           }}
         >
-          Reads
+          Front Page
         </Link>
       </div>
 
