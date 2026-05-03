@@ -1,3 +1,5 @@
+import DOMPurify from "isomorphic-dompurify";
+
 const BASE = "https://hacker-news.firebaseio.com/v0";
 
 export interface HNItem {
