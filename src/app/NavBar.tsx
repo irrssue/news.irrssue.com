@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import ProfileButton from "./ProfileButton";
-import PostButton from "./PostButton";
 
 function getSavedCount(): number {
   try {
