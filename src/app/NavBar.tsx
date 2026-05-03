@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ProfileButton from "./ProfileButton";
+import PostButton from "./PostButton";
 
 const TABS = [
   { label: "fresh", href: "/fresh" },
