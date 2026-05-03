@@ -13,12 +13,21 @@ function UserIcon() {
 }
 
 export default function ProfileButton() {
-  const [user, setUser] = useState<User>(null);
+  const { user, setUser, loginOpen, openLogin, closeLogin } = useAuth();
   const [open, setOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (loginOpen) setOpen(true);
+  }, [loginOpen]);
+
+  function handleClose() {
+    setOpen(false);
+    closeLogin();
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
