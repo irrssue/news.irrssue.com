@@ -16,62 +16,6 @@ function sanitizeHNHtml(html: string): string {
     .replace(/javascript:/gi, "");
 }
 
-function CommentBadge({ count }: { count: number }) {
-  const display = count > 999 ? "999+" : String(count);
-  const fontSize = display.length >= 4 ? 10 : display.length === 3 ? 11 : 12;
-
-  return (
-    <span
-      style={{
-        position: "relative",
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        width: 40,
-        height: 40,
-        color: "#999999",
-        transition: "color 0.1s",
-      }}
-      onMouseEnter={(e) =>
-        ((e.currentTarget as HTMLElement).style.color = "#e2e2e2")
-      }
-      onMouseLeave={(e) =>
-        ((e.currentTarget as HTMLElement).style.color = "#999999")
-      }
-    >
-      <svg
-        width="40"
-        height="40"
-        viewBox="0 0 40 40"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ position: "absolute", inset: 0 }}
-        aria-hidden="true"
-      >
-        <path
-          d="M9 5h22a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H17l-6 6a1 1 0 0 1-1.7-.7V28H9a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      </svg>
-      <span
-        style={{
-          position: "relative",
-          fontFamily: "var(--font-mono)",
-          fontSize,
-          fontWeight: 500,
-          lineHeight: 1,
-          marginTop: -6,
-        }}
-      >
-        {display}
-      </span>
-    </span>
-  );
-}
-
 function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) {
   const [collapsed, setCollapsed] = useState(false);
   const age = getAge(comment.time);
