@@ -34,9 +34,12 @@ export function sanitizeHNHtml(html: string): string {
 
 export function getAge(unixTime: number): string {
   const seconds = Math.floor(Date.now() / 1000) - unixTime;
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h`;
-  return `${Math.floor(seconds / 86400)}d`;
+  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+  if (seconds < 86400 * 365) return `${Math.floor(seconds / 86400)}d ago`;
+  const years = Math.floor(seconds / (86400 * 365));
+  return `${years} year${years === 1 ? "" : "s"} ago`;
 }
 
 export function getDomain(url?: string): string {
