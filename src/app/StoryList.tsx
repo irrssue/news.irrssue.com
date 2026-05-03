@@ -219,118 +219,64 @@ function CommentsPanel({
 
 function StoryRow({
   story,
-  isLast,
   expanded,
   onToggleComments,
   titleLinksToComments,
 }: {
   story: HNItem;
-  isLast: boolean;
   expanded: boolean;
   onToggleComments: () => void;
   titleLinksToComments?: boolean;
 }) {
   const age = getAge(story.time);
   const domain = getDomain(story.url);
-
-  const titleStyle = {
-    display: "block",
-    fontSize: 14.5,
-    fontWeight: 500,
-    color: "#dedede",
-    lineHeight: 1.45,
-    fontFamily: "var(--font-inter)",
-    marginBottom: 7,
-    transition: "color 0.1s",
-    textDecoration: "none",
-  } as const;
-  const onEnter = (e: React.MouseEvent<HTMLElement>) =>
-    ((e.currentTarget as HTMLElement).style.color = "#fff");
-  const onLeave = (e: React.MouseEvent<HTMLElement>) =>
-    ((e.currentTarget as HTMLElement).style.color = "#dedede");
+  const cmtCount = story.descendants ?? 0;
 
   return (
-    <div
-      style={{
-        borderBottom: isLast && !expanded ? "none" : "1px solid #161616",
-      }}
-    >
-      <div className="story-grid">
-        {/* Points */}
-        <div style={{ textAlign: "right", paddingTop: 2 }}>
-          <div className="pts-score">
-            {story.score}
-          </div>
-          <div
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: 10,
-              color: "#5c5c5c",
-              marginTop: 5,
-              lineHeight: 1.3,
-            }}
-          >
-            points · {age}
-          </div>
-        </div>
-
-        {/* Title + meta */}
+    <>
+      <div className="row">
         <div>
-          {titleLinksToComments ? (
-            <Link
-              href={`/story/${story.id}`}
-              style={titleStyle}
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
-            >
-              {story.title}
-            </Link>
-          ) : (
-            <a
-              href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={titleStyle}
-              onMouseEnter={onEnter}
-              onMouseLeave={onLeave}
-            >
-              {story.title}
-            </a>
-          )}
-          <div
-            style={{
-              fontSize: 11,
-              color: "#5c5c5c",
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            <span style={{ color: "#6f6f6f" }}>{domain}</span>
-            <span style={{ color: "#454545" }}> · by </span>
-            <span style={{ color: "#787878" }}>{story.by}</span>
+          <p className="ttl">
+            {titleLinksToComments ? (
+              <Link href={`/story/${story.id}`}>{story.title}</Link>
+            ) : (
+              <a
+                href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {story.title}
+              </a>
+            )}
+            {domain && <span className="dom">{domain}</span>}
+          </p>
+          <div className="meta">
+            <b>{story.score}</b>
+            <span>points</span>
+            <span className="sep">·</span>
+            <span>by {story.by}</span>
+            <span className="sep">·</span>
+            <span>{age}</span>
           </div>
         </div>
-
-        {/* Comments link */}
-        <div style={{ textAlign: "right", paddingTop: 2 }}>
-          <Link
-            href={`/story/${story.id}`}
-            aria-label={`${story.descendants ?? 0} comments`}
-            style={{
-              display: "inline-flex",
-              textDecoration: "none",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <CommentBadge count={story.descendants ?? 0} />
-          </Link>
-        </div>
+        <Link
+          href={`/story/${story.id}`}
+          className="cmts"
+          aria-label={`${cmtCount} comments`}
+          onClick={(e) => {
+            if (expanded) {
+              e.preventDefault();
+              onToggleComments();
+            }
+          }}
+        >
+          <b>{cmtCount}</b> comments
+        </Link>
       </div>
-
       {expanded && (
         <CommentsPanel storyId={story.id} onClose={onToggleComments} />
       )}
-    </div>
+    </>
   );
 }
 
@@ -344,6 +290,7 @@ export default function StoryList({
   titleLinksToComments?: boolean;
 }) {
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [filter, setFilter] = useState<"today" | "week" | "month" | "all">("today");
 
   function toggleComments(id: number) {
     setExpandedId((prev) => (prev === id ? null : id));
@@ -351,47 +298,33 @@ export default function StoryList({
 
   return (
     <>
-      {/* Section header */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "baseline",
-          justifyContent: "space-between",
-          marginBottom: 0,
-          paddingBottom: 12,
-          borderBottom: "1px solid #1a1a1a",
-        }}
-      >
-        <span
-          style={{
-            fontSize: 11,
-            fontWeight: 500,
-            color: "#cccccc",
-            fontFamily: "var(--font-inter)",
-            letterSpacing: "0.08em",
-            textTransform: "uppercase",
-          }}
-        >
-          {label}
-        </span>
-        <span
-          style={{
-            fontSize: 11,
-            color: "#4d4d4d",
-            fontFamily: "var(--font-mono)",
-          }}
-        >
-          {stories.length} links
-        </span>
+      <div className="page-head">
+        <div className="lhs">
+          <h1>{label}</h1>
+          <span className="meta">{stories.length} links</span>
+        </div>
+        <div className="filters">
+          {(["today", "week", "month", "all"] as const).map((k) => (
+            <a
+              key={k}
+              href="#"
+              className={filter === k ? "on" : ""}
+              onClick={(e) => {
+                e.preventDefault();
+                setFilter(k);
+              }}
+            >
+              {k === "all" ? "all-time" : k}
+            </a>
+          ))}
+        </div>
       </div>
 
-      {/* Story list */}
-      <div>
-        {stories.map((story, i) => (
+      <div className="listA">
+        {stories.map((story) => (
           <StoryRow
             key={story.id}
             story={story}
-            isLast={i === stories.length - 1}
             expanded={expandedId === story.id}
             onToggleComments={() => toggleComments(story.id)}
             titleLinksToComments={titleLinksToComments}
