@@ -102,10 +102,6 @@ export default function NavBar() {
                 );
               })}
             </ul>
-            <div className="mobile-actions">
-              <PostButton />
-              <ProfileButton />
-            </div>
           </div>
         </>
       )}
