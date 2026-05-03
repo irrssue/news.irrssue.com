@@ -22,59 +22,64 @@ export default function NavBar() {
   useEffect(() => { setOpen(false); }, [pathname]);
 
   return (
-    <header className="topbar">
-      <div className="topbar-left">
-        <button
-          className="hamburger"
-          onClick={() => setOpen(o => !o)}
-          aria-label="Toggle menu"
-          aria-expanded={open}
-        >
-          <span className={`ham-bar${open ? " open" : ""}`} />
-          <span className={`ham-bar${open ? " open" : ""}`} />
-          <span className={`ham-bar${open ? " open" : ""}`} />
-        </button>
-        <Link href="/" className="brand">Reads</Link>
-      </div>
+    <>
+      <header className="topbar">
+        <div className="topbar-left">
+          <button
+            className="hamburger"
+            onClick={() => setOpen(o => !o)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            <span className="ham-bar" />
+            <span className="ham-bar" />
+            <span className="ham-bar" />
+          </button>
+          <Link href="/" className="brand">Reads</Link>
+        </div>
 
-      <ul className="nav">
-        {TABS.map(tab => {
-          const isActive = tab.href === "/" ? pathname === "/" : pathname === tab.href;
-          return (
-            <li key={tab.href}>
-              <Link href={tab.href} className={isActive ? "on" : ""}>
-                {tab.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+        <ul className="nav">
+          {TABS.map(tab => {
+            const isActive = tab.href === "/" ? pathname === "/" : pathname === tab.href;
+            return (
+              <li key={tab.href}>
+                <Link href={tab.href} className={isActive ? "on" : ""}>
+                  {tab.label}
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
-      <div className="right">
-        <PostButton />
-        <ProfileButton />
-      </div>
+        <div className="right">
+          <PostButton />
+          <ProfileButton />
+        </div>
+      </header>
 
       {open && (
-        <div className="mobile-menu">
-          <ul className="mobile-nav">
-            {TABS.map(tab => {
-              const isActive = tab.href === "/" ? pathname === "/" : pathname === tab.href;
-              return (
-                <li key={tab.href}>
-                  <Link href={tab.href} className={isActive ? "on" : ""} onClick={() => setOpen(false)}>
-                    {tab.label}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-          <div className="mobile-actions">
-            <PostButton />
-            <ProfileButton />
+        <>
+          <div className="mobile-overlay-backdrop" onClick={() => setOpen(false)} />
+          <div className="mobile-overlay">
+            <ul className="mobile-nav">
+              {TABS.map(tab => {
+                const isActive = tab.href === "/" ? pathname === "/" : pathname === tab.href;
+                return (
+                  <li key={tab.href}>
+                    <Link href={tab.href} className={isActive ? "on" : ""} onClick={() => setOpen(false)}>
+                      {tab.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="mobile-actions">
+              <PostButton />
+              <ProfileButton />
+            </div>
           </div>
-        </div>
+        </>
       )}
-    </header>
+    </>
   );
 }
