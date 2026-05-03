@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { HNItem, HNComment, getAge, getDomain, fetchComments, sanitizeHNHtml } from "./hn";
+import BookmarkButton from "./BookmarkButton";
 
 function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) {
   const [collapsed, setCollapsed] = useState(false);
