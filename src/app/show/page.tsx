@@ -7,7 +7,7 @@ export default async function Show() {
   return (
     <>
       <NavBar />
-      <main style={{ maxWidth: 740, margin: "0 auto", padding: "44px 28px 96px" }}>
+      <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
         <StoryList stories={stories} label="Show HN" />
       </main>
     </>
