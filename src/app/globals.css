@@ -514,13 +514,18 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-mono), monospace;
   font-size: 11.5px;
 }
-.page-head .filters a {
+.page-head .filters a,
+.page-head .filters button {
   color: var(--ink-3);
   text-decoration: none;
   transition: color .15s;
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
 }
-.page-head .filters a:hover { color: var(--ink-2); }
-.page-head .filters a.on { color: var(--ink); }
+.page-head .filters a:hover,
+.page-head .filters button:hover { color: var(--ink-2); }
+.page-head .filters a.on,
+.page-head .filters button.on { color: var(--ink); }
 
 /* === Direction A — Quiet list === */
 .listA .row {
