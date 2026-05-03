@@ -314,41 +314,15 @@ function StoryRow({
         <div style={{ textAlign: "right", paddingTop: 2 }}>
           <Link
             href={`/story/${story.id}`}
+            aria-label={`${story.descendants ?? 0} comments`}
             style={{
-              display: "block",
+              display: "inline-flex",
               textDecoration: "none",
-              textAlign: "right",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 17,
-                fontWeight: 500,
-                color: "#999999",
-                lineHeight: 1,
-                transition: "color 0.1s",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.color = "#aaa")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.color = "#999999")
-              }
-            >
-              {story.descendants ?? 0}
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: 10,
-                color: "#4d4d4d",
-                marginTop: 5,
-                transition: "color 0.1s",
-              }}
-            >
-              comments
-            </div>
+            <CommentBadge count={story.descendants ?? 0} />
           </Link>
         </div>
       </div>
