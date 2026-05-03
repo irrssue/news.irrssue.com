@@ -21,9 +21,12 @@ export default function InfiniteList({
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const offsetRef = useRef(initialStories.length);
+  const loadingRef = useRef(false);
+  const doneRef = useRef(false);
 
   const loadMore = useCallback(async () => {
-    if (loading || done) return;
+    if (loadingRef.current || doneRef.current) return;
+    loadingRef.current = true;
     setLoading(true);
 
     const params = new URLSearchParams({
