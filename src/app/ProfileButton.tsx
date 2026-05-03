@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
-
-type User = { username: string } | null;
+import { useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
 
 function UserIcon() {
   return (
