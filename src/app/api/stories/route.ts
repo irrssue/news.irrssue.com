@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let stories;
+    let stories: HNItem[];
     if (feed === "top" && VALID_RANGES.includes(range as TimeRange)) {
       stories = await fetchStoriesByRange(range as TimeRange, offset + count);
       stories = stories.slice(offset);
