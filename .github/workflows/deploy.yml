@@ -28,11 +28,17 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
 
       - name: Deploy
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
           ssh -i ~/.ssh/id_ed25519 \
-            -o StrictHostKeyChecking=no \
-            -o UserKnownHostsFile=/dev/null \
-            irrssue@100.100.200.29 bash -s <<'SSHEOF'
+            -o UserKnownHostsFile=~/.ssh/known_hosts \
+            -o StrictHostKeyChecking=yes \
+            "$SSH_USER@$SSH_HOST" bash -s <<'SSHEOF'
           set -euo pipefail
           cd ~/minimal-hackernews
           git pull --ff-only
