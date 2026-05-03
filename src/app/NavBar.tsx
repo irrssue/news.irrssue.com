@@ -83,10 +83,7 @@ export default function NavBar() {
           })}
         </ul>
 
-        <div className="right">
-          <PostButton />
-          <ProfileButton />
-        </div>
+        <div className="right" />
       </header>
 
       {open && (
