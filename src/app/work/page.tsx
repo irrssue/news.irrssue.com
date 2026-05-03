@@ -8,7 +8,7 @@ export default async function Work() {
     <>
       <NavBar />
       <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
-        <StoryList stories={stories} label="Work" />
+        <StoryList stories={stories} label="Work" feed="job" />
       </main>
     </>
   );
