@@ -37,6 +37,11 @@ export default function NavBar() {
             <span className="ham-bar" />
           </button>
           <Link href="/" className="brand">Reads</Link>
+          <Link href="/saved" aria-label="Saved" style={{ display: "flex", alignItems: "center", color: "var(--ink-4)", transition: "color 0.15s", marginLeft: 2 }} onMouseEnter={(e) => (e.currentTarget.style.color = "var(--ink-2)")} onMouseLeave={(e) => (e.currentTarget.style.color = "var(--ink-4)")}>
+            <svg width="13" height="16" viewBox="0 0 13 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M1 1h11v13.5L6.5 11 1 14.5V1z" />
+            </svg>
+          </Link>
         </div>
 
         <ul className="nav">
