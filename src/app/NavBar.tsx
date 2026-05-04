@@ -16,10 +16,7 @@ const TABS = [
   { label: "front page", href: "/" },
   { label: "fresh", href: "/fresh" },
   { label: "threads", href: "/threads" },
-  { label: "archive", href: "/archive" },
-  { label: "show", href: "/show" },
   { label: "work", href: "/work" },
-  { label: "saved", href: "/saved" },
 ] as const;
 
 export default function NavBar() {
