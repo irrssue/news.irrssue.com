@@ -120,12 +120,11 @@ function CommentNode({
   );
 }
 
-type SortMode = "best" | "top" | "new" | "old" | "controversial";
+type SortMode = "best" | "new";
 
 function sortComments(comments: HNComment[], mode: SortMode): HNComment[] {
   const arr = [...comments];
   if (mode === "new") return arr.sort((a, b) => b.time - a.time);
-  if (mode === "old") return arr.sort((a, b) => a.time - b.time);
   return arr;
 }
 
@@ -140,7 +139,7 @@ export default function CommentsThread({
 }) {
   const [sort, setSort] = useState<SortMode>("best");
   const sorted = sortComments(comments, sort);
-  const sorts: SortMode[] = ["best", "top", "new", "old", "controversial"];
+  const sorts: SortMode[] = ["best", "new"];
 
   return (
     <div>
