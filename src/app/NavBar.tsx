@@ -81,7 +81,9 @@ export default function NavBar() {
           })}
         </ul>
 
-        <div className="right" />
+        <div className="right" style={{ position: "relative" }}>
+          <ProfileButton />
+        </div>
       </header>
 
       {open && (
