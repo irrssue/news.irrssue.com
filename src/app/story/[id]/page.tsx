@@ -25,7 +25,7 @@ export default async function StoryPage({ params }: { params: Promise<{ id: stri
         <span className="sep">/</span>
         <Link href="/">Front page</Link>
         <span className="sep">/</span>
-        <span>thread</span>
+        <Link href={`/story/${id}`}>thread</Link>
       </nav>
 
       <div className="story-hero">
