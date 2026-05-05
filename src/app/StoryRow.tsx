@@ -127,7 +127,7 @@ export default function StoryRow({
   return (
     <>
       <div className="row">
-        <BookmarkButton id={story.id} />
+        <BookmarkButton id={story.id} className="save-btn" />
         <div>
           <p className="ttl">
             {titleLinksToComments ? (
@@ -146,9 +146,9 @@ export default function StoryRow({
           <div className="meta">
             <b>{story.score}</b>
             <span>points</span>
-            <span className="sep">.</span>
+            <span className="sep">·</span>
             <span>by {story.by}</span>
-            <span className="sep">.</span>
+            <span className="sep">·</span>
             <span>{age}</span>
           </div>
         </div>
