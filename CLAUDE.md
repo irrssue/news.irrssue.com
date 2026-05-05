@@ -20,10 +20,10 @@ Dark theme only. All colors via CSS vars in `globals.css`.
 | `--bg` | `#0b0d0f` | Page background (deep dark canvas) |
 | `--bg-2` | `#141414` | Raised surface (composer, code) |
 | `--bg-3` | `#1a1a1a` | Active nav pill, kbd |
-| `--ink` | `#c8c8c7` | Primary text |
-| `--ink-2` | `#969695` | Secondary text |
-| `--ink-3` | `#636362` | Faint / metadata |
-| `--ink-4` | `#3e3e3d` | Disabled / dot separators |
+| `--ink` | `#e2e2e1` | Primary text |
+| `--ink-2` | `#b8b8b7` | Secondary text |
+| `--ink-3` | `#8a8a89` | Faint / metadata |
+| `--ink-4` | `#585857` | Disabled / dot separators |
 | `--rule` | `#1e1e1c` | Row dividers, borders |
 | `--rule-2` | `#262624` | Stronger dividers |
 | `--chip` | `#1d1d1b` | Filter chip background |
