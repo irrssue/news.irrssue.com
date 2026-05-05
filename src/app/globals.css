@@ -447,7 +447,7 @@ a { color: inherit; text-decoration: none; }
 }
 .topbar-left {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 12px;
 }
 .topbar .brand {
