@@ -54,7 +54,7 @@ export default function SavedPage() {
       <NavBar />
       <main className="page-main">
         <div className="context">
-          <span className="range-name"><b>Saved</b>links</span>
+          <span className="range-name"><b>Saved</b></span>
           <span className="count">{loading ? "—" : `${stories.length} links`}</span>
         </div>
 
