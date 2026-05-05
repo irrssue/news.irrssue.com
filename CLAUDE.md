@@ -81,6 +81,9 @@ pushing the title off-screen. Switched to a fluid max-width with clamp()
 so the layout adapts without a JS resize listener.
 ```
 - Never use generic messages like "auto: update Navbar.tsx" or "update files".
+- **Describe the change, not the file.** `auto: update InfiniteList.tsx` is forbidden — it tells the reader nothing. Subject must name the actual change in plain English (what behaviour, layout, or fix shipped). If you can't describe it in one short sentence, the commit is too big — split it.
+- Readability beats cleverness. A teammate skimming `git log` six months from now should understand each commit without opening the diff. Prefer concrete nouns ("paginate stories", "fix mobile overflow", "swap bg to GitHub dark") over vague verbs ("update", "tweak", "adjust").
+- Body is optional for trivial style/copy tweaks but required for any logic, layout, or dependency change.
 
 ## Deployment target
 
