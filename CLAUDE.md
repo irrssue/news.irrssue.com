@@ -15,11 +15,18 @@ Dark theme only. All colors via CSS vars in `globals.css`.
 
 | Token | Value | Use |
 |-------|-------|-----|
-| `--bg` | `#0c0c0c` | Page background |
-| `--border` | `#1e1e1e` | Row dividers |
-| `--text` | `#e2e2e2` | Primary text |
-| `--text-dim` | `#888` | Secondary |
-| `--text-faint` | `#4a4a4a` | Metadata |
+| `--bg` | `#101216` | Page background (GitHub dark canvas) |
+| `--bg-2` | `#141414` | Raised surface (composer, code) |
+| `--bg-3` | `#1a1a1a` | Active nav pill, kbd |
+| `--ink` | `#ededec` | Primary text |
+| `--ink-2` | `#a8a8a6` | Secondary text |
+| `--ink-3` | `#6e6e6c` | Faint / metadata |
+| `--ink-4` | `#4a4a48` | Disabled / dot separators |
+| `--rule` | `#1e1e1c` | Row dividers, borders |
+| `--rule-2` | `#262624` | Stronger dividers |
+| `--chip` | `#1d1d1b` | Filter chip background |
+| `--op` | `#d9b27a` | OP / accent (warm) |
+| `--hot` | `#d9b27a` | Live indicator |
 
 ## Layout: "B — Points first"
 
