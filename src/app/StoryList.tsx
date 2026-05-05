@@ -26,6 +26,10 @@ export default function StoryList({
   const [pendingRange, setPendingRange] = useState<string | null>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("hn-count", { detail: count }));
+  }, [count]);
+
   function handleRangeClick(k: "today" | "week" | "month" | "all") {
     if (k === range) return;
     setPendingRange(k);
