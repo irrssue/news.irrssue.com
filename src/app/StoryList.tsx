@@ -21,14 +21,9 @@ export default function StoryList({
   showRangeFilter?: boolean;
   feed?: string;
 }) {
-  const [count, setCount] = useState(stories.length);
   const [pending, startTransition] = useTransition();
   const [pendingRange, setPendingRange] = useState<string | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    window.dispatchEvent(new CustomEvent("hn-count", { detail: count }));
-  }, [count]);
 
   function handleRangeClick(k: "today" | "week" | "month" | "all") {
     if (k === range) return;
