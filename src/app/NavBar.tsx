@@ -82,6 +82,7 @@ export default function NavBar() {
         </ul>
 
         <div className="right" style={{ position: "relative" }}>
+          <button className="post-btn" aria-label="Submit a post">+ post</button>
           <ProfileButton />
         </div>
       </header>
