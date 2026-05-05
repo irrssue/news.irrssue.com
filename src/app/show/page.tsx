@@ -6,7 +6,7 @@ export default async function Show() {
   const stories = await fetchStories("show", 30);
   return (
     <>
-      <NavBar count={stories.length} />
+      <NavBar />
       <main className="page-main">
         <StoryList stories={stories} label="Show HN" feed="show" />
       </main>

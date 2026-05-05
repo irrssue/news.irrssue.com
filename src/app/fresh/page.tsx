@@ -6,7 +6,7 @@ export default async function Fresh() {
   const stories = await fetchStories("new", 30);
   return (
     <>
-      <NavBar count={stories.length} />
+      <NavBar />
       <main className="page-main">
         <StoryList stories={stories} label="Fresh" feed="new" />
       </main>

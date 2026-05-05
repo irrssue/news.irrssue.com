@@ -6,7 +6,7 @@ export default async function Archive() {
   const stories = await fetchStories("best", 30);
   return (
     <>
-      <NavBar count={stories.length} />
+      <NavBar />
       <main className="page-main">
         <StoryList stories={stories} label="Archive" feed="best" />
       </main>

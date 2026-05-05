@@ -6,7 +6,7 @@ export default async function Work() {
   const stories = await fetchStories("job", 30);
   return (
     <>
-      <NavBar count={stories.length} />
+      <NavBar />
       <main className="page-main">
         <StoryList stories={stories} label="Work" feed="job" />
       </main>
