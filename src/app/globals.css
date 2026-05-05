@@ -705,6 +705,12 @@ main.page-main {
   padding: 28px 40px 96px;
 }
 
+@media (max-width: 600px) {
+  main.page-main {
+    padding: 10px;
+  }
+}
+
 /* === List v3 — no dividers === */
 .listA { display: flex; flex-direction: column; }
 
