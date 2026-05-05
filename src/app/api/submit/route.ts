@@ -25,11 +25,25 @@ export async function POST(req: NextRequest) {
   if (!title) {
     return NextResponse.json({ ok: false, error: "Title is required" }, { status: 400 });
   }
+  if (title.length > 80) {
+    return NextResponse.json({ ok: false, error: "Title must be 80 characters or fewer" }, { status: 400 });
+  }
   if (!url && !text) {
     return NextResponse.json({ ok: false, error: "URL or text is required" }, { status: 400 });
   }
   if (url && text) {
     return NextResponse.json({ ok: false, error: "Submit either a URL or text, not both" }, { status: 400 });
+  }
+  if (url) {
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return NextResponse.json({ ok: false, error: "Invalid URL" }, { status: 400 });
+    }
+    if (!/^https?:$/.test(parsed.protocol)) {
+      return NextResponse.json({ ok: false, error: "URL must use http or https" }, { status: 400 });
+    }
   }
 
   let hnCookie: string;
