@@ -61,7 +61,6 @@ export default function StoryList({
           feed={feed}
           range={range}
           titleLinksToComments={titleLinksToComments}
-          onCountChange={setCount}
         />
       </div>
     </>
