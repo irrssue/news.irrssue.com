@@ -43,7 +43,37 @@ npm run lint
 Live data from HN Firebase API (`https://hacker-news.firebaseio.com/v0`). Top 30 stories, revalidated every 5 minutes. Tags auto-assigned by keyword matching in `src/app/hn.ts`.
 
 ## Git workflow
-- add and write a easy to understand commit message and push the commit to my main branh in github, You don't need to open a PR.
+- Stage all relevant changes and push directly to `main`. No PRs needed.
+- Write commit messages like an experienced engineer. Follow this format exactly:
+
+```
+<type>(<scope>): <short imperative summary, ≤60 chars>
+
+<body — 2-4 sentences max. Explain WHY the change was made, what problem
+it solves, and any non-obvious side effects or trade-offs. Be specific
+about the behaviour before vs. after when it helps the reader.>
+```
+
+**type**: `feat` | `fix` | `refactor` | `style` | `perf` | `chore`  
+**scope**: the component, module, or area affected (e.g. `Navbar`, `StoryList`, `api`, `layout`)
+
+Examples of good commit messages:
+```
+feat(StoryList): paginate stories in batches of 30
+
+Previously all top stories were fetched in a single waterfall request,
+which caused a 2–3 s blank screen on slow connections. Stories now load
+in the first batch immediately and subsequent pages are fetched on scroll,
+cutting initial paint time by ~60%.
+```
+```
+fix(Navbar): prevent layout shift on mobile viewport resize
+
+The nav container used a fixed pixel width that overflowed below 480 px,
+pushing the title off-screen. Switched to a fluid max-width with clamp()
+so the layout adapts without a JS resize listener.
+```
+- Never use generic messages like "auto: update Navbar.tsx" or "update files".
 
 ## Deployment target
 
