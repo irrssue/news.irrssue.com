@@ -132,7 +132,7 @@ function RangePicker() {
   );
 }
 
-export default function NavBar({ count }: { count?: number }) {
+export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
