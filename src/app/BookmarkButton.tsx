@@ -12,7 +12,7 @@ function getBookmarks(): number[] {
   }
 }
 
-export default function BookmarkButton({ id, onUnsave }: { id: number; onUnsave?: () => void }) {
+export default function BookmarkButton({ id, onUnsave, className }: { id: number; onUnsave?: () => void; className?: string }) {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,9 @@ export default function BookmarkButton({ id, onUnsave }: { id: number; onUnsave?
     <button
       onClick={toggle}
       aria-label={saved ? "Remove bookmark" : "Bookmark"}
-      style={{
+      data-saved={saved ? "true" : "false"}
+      className={className}
+      style={className ? undefined : {
         background: "none",
         border: "none",
         padding: 0,
@@ -50,12 +52,6 @@ export default function BookmarkButton({ id, onUnsave }: { id: number; onUnsave?
         alignItems: "center",
         transition: "color 0.15s",
         lineHeight: 1,
-      }}
-      onMouseEnter={(e) => {
-        if (!saved) (e.currentTarget as HTMLElement).style.color = "var(--ink-3)";
-      }}
-      onMouseLeave={(e) => {
-        if (!saved) (e.currentTarget as HTMLElement).style.color = "var(--ink-4)";
       }}
     >
       <svg
