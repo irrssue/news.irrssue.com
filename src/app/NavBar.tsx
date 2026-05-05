@@ -137,8 +137,18 @@ function RangePicker() {
 export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [postOpen, setPostOpen] = useState(false);
+  const { user, openLogin } = useAuth();
 
   useEffect(() => { setOpen(false); }, [pathname]);
+
+  function handlePostClick() {
+    if (!user) {
+      openLogin();
+    } else {
+      setPostOpen(true);
+    }
+  }
 
   const showRange = pathname === "/";
 
