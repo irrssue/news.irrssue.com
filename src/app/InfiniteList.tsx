@@ -35,9 +35,8 @@ export default function InfiniteList({
       offsetRef.current = initialStories.length;
       loadingRef.current = false;
       doneRef.current = false;
-      onCountChange?.(initialStories.length);
     }
-  }, [range, initialStories, onCountChange]);
+  }, [range, initialStories]);
 
   const loadMore = useCallback(async () => {
     if (loadingRef.current || doneRef.current) return;
