@@ -6,7 +6,7 @@ const securityHeaders = [
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-  { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
+  { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
   { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
   {
     key: "Strict-Transport-Security",
