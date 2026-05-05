@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "../NavBar";
 import BookmarkButton from "../BookmarkButton";
-import { HNItem, getAge, getDomain } from "../hn";
+import { HNItem, getAge, getDomain, sanitizeUrl } from "../hn";
 
 const KEY = "hn-bookmarks";
 const BASE = "https://hacker-news.firebaseio.com/v0";
@@ -83,7 +83,7 @@ export default function SavedPage() {
                   <div>
                     <p className="ttl">
                       <a
-                        href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
+                        href={sanitizeUrl(story.url) ?? `https://news.ycombinator.com/item?id=${story.id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { fetchStory, fetchThreadComments, getAge, getDomain, sanitizeHNHtml } from "../../hn";
+import { fetchStory, fetchThreadComments, getAge, getDomain, sanitizeHNHtml, sanitizeUrl } from "../../hn";
 import CommentsThread from "./CommentsThread";
 
 export default async function StoryPage({ params }: { params: Promise<{ id: string }> }) {
@@ -35,8 +35,8 @@ export default async function StoryPage({ params }: { params: Promise<{ id: stri
         </div>
         <div>
           <h1>
-            {story.url ? (
-              <a href={story.url} target="_blank" rel="noopener noreferrer">
+            {sanitizeUrl(story.url) ? (
+              <a href={sanitizeUrl(story.url)!} target="_blank" rel="noopener noreferrer">
                 {story.title}
               </a>
             ) : (

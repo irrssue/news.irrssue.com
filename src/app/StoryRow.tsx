@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { HNItem, HNComment, getAge, getDomain, fetchComments, sanitizeHNHtml } from "./hn";
+import { HNItem, HNComment, getAge, getDomain, fetchComments, sanitizeHNHtml, sanitizeUrl } from "./hn";
 import BookmarkButton from "./BookmarkButton";
 
 function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) {
@@ -137,7 +137,7 @@ export default function StoryRow({
               <Link href={`/story/${story.id}`}>{story.title}</Link>
             ) : (
               <a
-                href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
+                href={sanitizeUrl(story.url) ?? `https://news.ycombinator.com/item?id=${story.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

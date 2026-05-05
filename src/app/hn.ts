@@ -54,6 +54,18 @@ export function getDomain(url?: string): string {
   }
 }
 
+const SAFE_URL_SCHEMES = /^https?:|^mailto:/i;
+
+export function sanitizeUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url);
+    return SAFE_URL_SCHEMES.test(parsed.protocol) ? url : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export type Feed =
   | "top"
   | "new"
