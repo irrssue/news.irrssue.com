@@ -18,7 +18,7 @@ export default async function Home({
 
   return (
     <>
-      <NavBar count={stories.length} />
+      <NavBar />
       <main className="page-main">
         <StoryList stories={stories} range={range} showRangeFilter />
       </main>
