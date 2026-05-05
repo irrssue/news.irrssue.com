@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef, useTransition, Suspense } from "react";
 import ProfileButton from "./ProfileButton";
+import PostModal from "./PostModal";
+import { useAuth } from "./AuthContext";
 
 const BOOKMARK_KEY = "hn-bookmarks";
 
