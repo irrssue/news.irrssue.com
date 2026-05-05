@@ -24,6 +24,7 @@ export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
+  const [linkCount, setLinkCount] = useState<number | null>(null);
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
