@@ -49,16 +49,6 @@ export default function NavBar() {
             <span className="ham-bar" />
           </button>
           <Link href="/" className="brand">Reads</Link>
-          {linkCount !== null && (
-            <span style={{
-              fontFamily: "var(--font-mono), monospace",
-              fontSize: 11,
-              color: "var(--ink-4)",
-              lineHeight: 1,
-            }}>
-              {linkCount} links
-            </span>
-          )}
           <Link
             href="/saved"
             aria-label="Saved"
