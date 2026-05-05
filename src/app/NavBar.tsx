@@ -222,7 +222,7 @@ export default function NavBar() {
               </li>
             </ul>
             <div className="mobile-actions">
-              <button className="post-btn" aria-label="Submit a post">+ post</button>
+              <button className="post-btn" aria-label="Submit a post" onClick={handlePostClick}>+ post</button>
               <ProfileButton />
             </div>
           </div>
