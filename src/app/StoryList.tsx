@@ -40,12 +40,8 @@ export default function StoryList({
 
   return (
     <>
-      <div className="page-head">
-        <div className="lhs">
-          <h1>{label}</h1>
-          <span className="meta">{count} links</span>
-        </div>
-        {showRangeFilter && (
+      {showRangeFilter && (
+        <div className="page-head" style={{ justifyContent: "flex-end" }}>
           <div className="filters">
             {(["today", "week", "month", "all"] as const).map((k) => {
               const isActive = pending ? pendingRange === k : range === k;
@@ -61,8 +57,8 @@ export default function StoryList({
               );
             })}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       <div style={{ opacity: pending ? 0.4 : 1, transition: "opacity 0.15s" }}>
         <InfiniteList
