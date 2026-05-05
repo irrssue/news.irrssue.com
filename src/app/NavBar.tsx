@@ -5,6 +5,56 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef, useTransition, Suspense } from "react";
 import ProfileButton from "./ProfileButton";
 
+const BOOKMARK_KEY = "hn-bookmarks";
+
+function SavedNavButton() {
+  const [hasSaved, setHasSaved] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    function check() {
+      try {
+        const items = JSON.parse(localStorage.getItem(BOOKMARK_KEY) ?? "[]");
+        setHasSaved(Array.isArray(items) && items.length > 0);
+      } catch {
+        setHasSaved(false);
+      }
+    }
+    check();
+    window.addEventListener("storage", check);
+    return () => window.removeEventListener("storage", check);
+  }, []);
+
+  const isActive = pathname === "/saved";
+
+  return (
+    <Link
+      href="/saved"
+      aria-label="Saved posts"
+      style={{
+        display: "flex",
+        alignItems: "center",
+        color: isActive ? "var(--ink)" : hasSaved ? "var(--ink-2)" : "var(--ink-4)",
+        transition: "color 0.15s",
+        lineHeight: 1,
+      }}
+    >
+      <svg
+        width="13"
+        height="16"
+        viewBox="0 0 13 16"
+        fill={hasSaved ? "currentColor" : "none"}
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M1 1h11v13.5L6.5 11 1 14.5V1z" />
+      </svg>
+    </Link>
+  );
+}
+
 const TABS = [
   { label: "front page", href: "/" },
   { label: "fresh", href: "/fresh" },
