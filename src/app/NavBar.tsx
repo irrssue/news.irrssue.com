@@ -35,6 +35,12 @@ export default function NavBar() {
     return () => window.removeEventListener("storage", update);
   }, []);
 
+  useEffect(() => {
+    const handler = (e: Event) => setLinkCount((e as CustomEvent<number>).detail);
+    window.addEventListener("hn-count", handler);
+    return () => window.removeEventListener("hn-count", handler);
+  }, []);
+
   return (
     <>
       <header className="topbar">
