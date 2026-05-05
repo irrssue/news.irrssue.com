@@ -56,11 +56,7 @@ export default function InfiniteList({
         doneRef.current = true;
         setDone(true);
       } else {
-        setStories((prev) => {
-          const next = [...prev, ...data.stories];
-          onCountChange?.(next.length);
-          return next;
-        });
+        setStories((prev) => [...prev, ...data.stories]);
         offsetRef.current += data.stories.length;
         if (data.stories.length < 30) {
           doneRef.current = true;
