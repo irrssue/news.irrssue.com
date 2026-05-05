@@ -705,29 +705,6 @@ main.page-main {
   padding: 28px 40px 96px;
 }
 
-/* Context line */
-.context {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 4px 12px 10px;
-  color: var(--ink-3);
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-}
-.context .range-name {
-  color: var(--ink-2);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-.context .range-name b {
-  color: var(--ink);
-  font-weight: 500;
-  margin-right: 6px;
-}
-.context .count { color: var(--ink-4); }
-
 /* === List v3 — no dividers === */
 .listA { display: flex; flex-direction: column; }
 
