@@ -13,6 +13,8 @@ Personal HN-style reader. Dark, minimal, typographic.
 
 Dark theme only. All colors via CSS vars in `globals.css`.
 
+**Rule: keep this section in sync with `globals.css`.** Every design change — token value, layout grid, spacing, font size, new token — must update CLAUDE.md in same commit. Token table, layout block, principles all reflect current state. Stale design docs forbidden.
+
 | Token | Value | Use |
 |-------|-------|-----|
 | `--bg` | `#0b0d0f` | Page background (deep dark canvas) |
