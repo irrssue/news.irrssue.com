@@ -444,3 +444,397 @@ node_modules/@tailwindcss/postcss        4.2.4   (postcss plugin, not postcss it
 The vulnerable instance lives in Next.js's own `node_modules` subtree. An `overrides` entry in `package.json` would force npm to hoist 8.5.10+ into that slot.
 
 *End of dependency audit section.*
+
+---
+
+## 5. Ship Checklist
+
+_Priority order: block launch → fix within 48h → harden later._
+
+---
+
+### MUST-FIX before public launch
+
+These are actionable, low-effort, and address real attack surface. Nothing here requires architectural changes.
+
+---
+
+#### M1 — Sanitize story URLs before use as href
+
+**Why:** `story.url` from Firebase/Algolia placed raw into `href` in three files. React 19 production builds do not strip `javascript:` scheme from anchor hrefs. If HN's API ever returns a malformed or injected URL, it executes on click.
+
+**Files to change:** `src/app/hn.ts`, then all three call sites update automatically.
+
+Add a URL sanitizer helper to `hn.ts` immediately after `getDomain`:
+
+```ts
+// src/app/hn.ts  — add after getDomain()
+const SAFE_SCHEMES = /^https?:|^mailto:/i;
+
+export function sanitizeUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url);
+    return SAFE_SCHEMES.test(parsed.protocol) ? url : undefined;
+  } catch {
+    return undefined;
+  }
+}
+```
+
+Then in every caller replace `story.url` with `sanitizeUrl(story.url)`:
+
+```ts
+// src/app/story/[id]/page.tsx  line 38-40
+// BEFORE:
+{story.url ? (
+  <a href={story.url} target="_blank" rel="noopener noreferrer">
+
+// AFTER:
+{sanitizeUrl(story.url) ? (
+  <a href={sanitizeUrl(story.url)!} target="_blank" rel="noopener noreferrer">
+```
+
+```ts
+// src/app/StoryRow.tsx  line 140
+// BEFORE:
+href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
+
+// AFTER:
+href={sanitizeUrl(story.url) ?? `https://news.ycombinator.com/item?id=${story.id}`}
+```
+
+```ts
+// src/app/saved/page.tsx  line 86
+// BEFORE:
+href={story.url ?? `https://news.ycombinator.com/item?id=${story.id}`}
+
+// AFTER:
+href={sanitizeUrl(story.url) ?? `https://news.ycombinator.com/item?id=${story.id}`}
+```
+
+Import `sanitizeUrl` in each file alongside the existing `getDomain` import.
+
+---
+
+#### M2 — Add missing COOP / COEP / CORP headers
+
+**Why:** Three standard isolation headers absent. COOP/COEP enable cross-origin process isolation (required if you ever use `SharedArrayBuffer`; also mitigates Spectre-class side-channel reads on modern browsers). CORP prevents other origins from embedding your server's responses.
+
+**File:** `next.config.ts` — add three entries to `securityHeaders`:
+
+```ts
+// next.config.ts — replace the securityHeaders array:
+const securityHeaders = [
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
+  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  {
+    key: "Content-Security-Policy",
+    value: [
+      "default-src 'self'",
+      "script-src 'self' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline'",
+      "font-src 'self' data:",
+      "img-src 'self' data:",
+      "connect-src 'self' https://hacker-news.firebaseio.com https://hn.algolia.com",
+      "frame-ancestors 'none'",
+      "base-uri 'self'",
+      "form-action 'self'",
+    ].join("; "),
+  },
+];
+```
+
+**Changes vs current:**
+- Added `Cross-Origin-Opener-Policy: same-origin`
+- Added `Cross-Origin-Embedder-Policy: require-corp`
+- Added `Cross-Origin-Resource-Policy: same-origin`
+- `style-src`: removed `https://fonts.googleapis.com` — not needed at runtime (Next.js font CSS is inlined)
+- `font-src`: removed `https://fonts.gstatic.com` — not needed at runtime (fonts self-hosted in `/_next/static/`)
+
+**Risk:** `COEP: require-corp` can break cross-origin iframes or resources that don't send `Cross-Origin-Resource-Policy` themselves. This app has no iframes and no cross-origin images, so it is safe. If a future change embeds external content, revisit.
+
+---
+
+#### M3 — Validate URL scheme server-side in `/api/submit`
+
+**Why:** Client-side `<input type="url">` is not a security control. Server should refuse non-http(s) URLs before forwarding to HN.
+
+```ts
+// src/app/api/submit/route.ts — add after the existing trim/empty checks, before the hnCookie fetch:
+
+if (url) {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return NextResponse.json({ ok: false, error: "Invalid URL" }, { status: 400 });
+  }
+  if (!/^https?:$/.test(parsed.protocol)) {
+    return NextResponse.json({ ok: false, error: "URL must be http or https" }, { status: 400 });
+  }
+}
+if (title.length > 80) {
+  return NextResponse.json({ ok: false, error: "Title must be 80 characters or fewer" }, { status: 400 });
+}
+```
+
+Insert this block at line 33 (after the `if (url && text)` check, before the `getValidHNCookie` call).
+
+---
+
+#### M4 — Apply postcss override to clear `npm audit`
+
+**Why:** `next@16.2.4` bundles `postcss@8.4.31` (GHSA-qx2v-qp2m-jg93, CVSS 6.1). Runtime exploitability is low for this app (no user CSS input, PostCSS build-time only), but the advisory will show as moderate in any automated scan and is trivially fixed.
+
+```json
+// package.json — add before "dependencies":
+"overrides": {
+  "postcss": ">=8.5.10"
+},
+```
+
+Then:
+
+```sh
+npm install
+npm audit   # expect 0 findings
+```
+
+---
+
+### SHOULD-FIX within 48h post-launch
+
+Lower urgency but worth closing before traffic grows.
+
+---
+
+#### S1 — Rate-limit `/api/submit`
+
+`checkRateLimit` already exists in `src/lib/rateLimit.ts`. Wire it into the submit handler with a separate, tighter limit (e.g., 3 submissions / 10 min per IP):
+
+```ts
+// src/lib/rateLimit.ts — add a second exported function:
+
+const SUBMIT_WINDOW_MS = 10 * 60 * 1000;
+const SUBMIT_MAX = 3;
+const submitStore = new Map<string, Entry>();
+
+export function checkSubmitRateLimit(ip: string): { allowed: boolean } {
+  const now = Date.now();
+  const entry = submitStore.get(ip);
+  if (!entry || now - entry.window_start > SUBMIT_WINDOW_MS) {
+    submitStore.set(ip, { count: 1, window_start: now });
+    return { allowed: true };
+  }
+  if (entry.count >= SUBMIT_MAX) return { allowed: false };
+  entry.count++;
+  return { allowed: true };
+}
+```
+
+```ts
+// src/app/api/submit/route.ts — add near top of POST handler, after proto check:
+import { checkSubmitRateLimit } from "@/lib/rateLimit";
+
+const ip =
+  req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+  req.headers.get("x-real-ip") ??
+  "unknown";
+if (!checkSubmitRateLimit(ip).allowed) {
+  return NextResponse.json(
+    { ok: false, error: "Too many submissions. Try again in 10 minutes." },
+    { status: 429 }
+  );
+}
+```
+
+---
+
+#### S2 — Version-control the Nginx config
+
+Nginx is part of the security boundary (TLS termination, XFF forwarding, proxy headers) but lives only on the server. A misconfigured Nginx breaks rate-limit IP attribution.
+
+Minimum required config block:
+
+```nginx
+# /etc/nginx/sites-available/news.irrssue.com
+server {
+    listen 443 ssl http2;
+    server_name news.irrssue.com;
+
+    ssl_certificate     /etc/letsencrypt/live/news.irrssue.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/news.irrssue.com/privkey.pem;
+    include             /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam         /etc/letsencrypt/ssl-dhparams.pem;
+
+    # Forward only the connecting IP — do not trust client-supplied XFF
+    proxy_set_header X-Real-IP        $remote_addr;
+    proxy_set_header X-Forwarded-For  $remote_addr;
+    proxy_set_header X-Forwarded-Proto https;
+    proxy_set_header Host             $host;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+    }
+}
+
+server {
+    listen 80;
+    server_name news.irrssue.com;
+    return 301 https://$host$request_uri;
+}
+```
+
+Key: `proxy_set_header X-Forwarded-For $remote_addr` — this overwrites any client-supplied XFF with the actual connecting IP, preventing rate-limit bypass.
+
+Commit a copy of this file at `nginx/news.irrssue.com.conf` in the repo (strip actual cert paths to paths only).
+
+---
+
+#### S3 — Add server-side session expiry
+
+Currently sessions expire only when the browser cookie expires (30-day `maxAge`). The server-side `hn_sessions` and `irrssue_sessions` records never expire. Add a cleanup pass in `db.ts`:
+
+```ts
+// src/lib/db.ts — add after the save() function:
+const SESSION_TTL_MS = 30 * 24 * 60 * 60 * 1000; // 30 days
+
+export function pruneExpiredSessions(): void {
+  const db = load();
+  const cutoff = new Date(Date.now() - SESSION_TTL_MS).toISOString();
+  db.hn_sessions = db.hn_sessions.filter(s => s.last_used_at > cutoff);
+  const validHNIds = new Set(db.hn_sessions.map(s => s.id));
+  db.irrssue_sessions = db.irrssue_sessions.filter(s => validHNIds.has(s.hn_session_id));
+  save(db);
+}
+```
+
+Call `pruneExpiredSessions()` inside `load()` before returning, or on a startup hook. This also caps `sessions.json` growth (finding §6.5 in audit).
+
+---
+
+### NICE-TO-HAVE hardening
+
+For a future pass — none of these block launch.
+
+---
+
+#### N1 — Nonce-based CSP (eliminates `unsafe-inline`)
+
+Next.js 13+ supports nonce-based CSP via `src/middleware.ts`. Requires generating a nonce per request, injecting it into the CSP header and the `<script>` tags via `next/headers`. Detailed guide: Next.js docs → "Content Security Policy". This is the only way to remove `'unsafe-inline'` from `script-src` while keeping App Router hydration working.
+
+Effort: ~2h. Impact: closes the last meaningful CSP gap.
+
+---
+
+#### N2 — Upgrade to SQLite for session storage
+
+The flat JSON file has a synchronous read-modify-write loop with no locking. Under concurrent login requests from the same user, writes can race and corrupt the file. For a personal app the probability is very low, but SQLite (via `better-sqlite3`) provides file-level locking with zero operational overhead and no additional service.
+
+---
+
+#### N3 — `npm ci` on deploy + lock file integrity check
+
+In your deploy script or PM2 ecosystem file, replace `npm install` with `npm ci`. Add a pre-start check:
+
+```sh
+# deploy.sh
+set -e
+git pull origin main
+npm ci                   # enforces lock file exactly
+npm run build
+pm2 restart news
+```
+
+---
+
+#### N4 — Tighten CSP `font-src` and `style-src`
+
+`next/font/google` self-hosts fonts at build time. At runtime, `fonts.googleapis.com` and `fonts.gstatic.com` are never contacted. The current CSP allows them unnecessarily. Already captured in M2 diff — remove `https://fonts.googleapis.com` from `style-src` and `https://fonts.gstatic.com` from `font-src`.
+
+---
+
+### Rollback plan
+
+If a header or config change breaks the site post-deploy:
+
+```sh
+# Revert last commit (preserves history)
+git revert HEAD --no-edit
+git push origin main
+
+# Rebuild and restart
+npm ci
+npm run build
+pm2 restart news
+```
+
+**What to check first if something breaks after M2 (headers):**
+- `COEP: require-corp` is the most likely breakage. It causes browsers to block cross-origin resources that don't send `Cross-Origin-Resource-Policy`. Check browser DevTools → Network tab for blocked requests. If anything breaks, remove just COEP from `next.config.ts` first.
+- Font loading: if fonts go missing, it means `next/font/google` did not self-host them (check `.next/static/media/` for `.woff2` files). Re-add `font-src https://fonts.gstatic.com` temporarily.
+
+**Checkpoint before launch:**
+
+```sh
+# Verify headers live (run from any machine with curl):
+curl -sI https://news.irrssue.com | grep -iE "content-security|x-frame|cross-origin|strict-transport"
+```
+
+Expected output should include all six security headers. If any are missing, Nginx is stripping them — check `proxy_pass` config.
+
+---
+
+### First 48h monitoring (homeserver + public exposure)
+
+This app is not on Vercel or Cloudflare — it's on a personal Ubuntu server. Monitoring is manual. Suggested checklist:
+
+**Server-side (SSH in and check):**
+
+```sh
+# PM2 process health
+pm2 status
+pm2 logs news --lines 200 | grep -iE "error|fail|uncaught|unhandled"
+
+# Nginx access log — look for scanner patterns
+tail -f /var/log/nginx/access.log | grep -vE "GET / |GET /_next"
+
+# Abnormal POST volume to auth endpoint (brute force probe)
+grep "POST /api/auth/login" /var/log/nginx/access.log | awk '{print $1}' | sort | uniq -c | sort -rn | head -20
+
+# Disk — sessions.json size (should stay small for a personal app)
+du -sh /path/to/.data/sessions.json
+
+# Rate limit hits (in app logs)
+pm2 logs news --lines 500 | grep "429"
+```
+
+**What to watch for:**
+
+| Signal | What it means | Action |
+|--------|--------------|--------|
+| Repeated 429s on `/api/auth/login` from same IP | Credential stuffing probe | IP is being blocked by rate limiter — good. If volume is high, add Nginx `limit_req` as second layer |
+| High volume GETs to `/api/stories` | Scraper | Add Nginx `limit_req` on that location |
+| PM2 crashes / restarts | Unhandled exception, memory leak, or OOM | `pm2 logs news` for stack trace |
+| `sessions.json` growing fast | Many different users logging in | Normal if the app goes viral; run `pruneExpiredSessions()` manually (S3) |
+| Any 5xx spike | Application error | Check PM2 logs immediately |
+
+**Browser check on launch day:**
+
+Open DevTools → Network on `news.irrssue.com`. Verify:
+- No mixed-content warnings
+- No COEP-blocked resources (Console tab)
+- Response headers on any page include CSP, HSTS, COOP, CORP
+
+---
+
+*End of ship checklist. No source code modified.*
