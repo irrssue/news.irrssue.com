@@ -24,7 +24,6 @@ export default function NavBar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [hasSaved, setHasSaved] = useState(false);
-  const [linkCount, setLinkCount] = useState<number | null>(null);
 
   useEffect(() => { setOpen(false); }, [pathname]);
 
@@ -33,12 +32,6 @@ export default function NavBar() {
     update();
     window.addEventListener("storage", update);
     return () => window.removeEventListener("storage", update);
-  }, []);
-
-  useEffect(() => {
-    const handler = (e: Event) => setLinkCount((e as CustomEvent<number>).detail);
-    window.addEventListener("hn-count", handler);
-    return () => window.removeEventListener("hn-count", handler);
   }, []);
 
   return (
