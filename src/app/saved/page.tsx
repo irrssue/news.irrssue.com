@@ -51,17 +51,15 @@ export default function SavedPage() {
 
   return (
     <>
-      <NavBar />
-      <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
-        <div className="page-head">
-          <div className="lhs">
-            <h1>Saved</h1>
-            <span className="meta">{loading ? "—" : `${stories.length} links`}</span>
-          </div>
+      <NavBar count={stories.length} />
+      <main className="page-main">
+        <div className="context">
+          <span className="range-name"><b>Saved</b>links</span>
+          <span className="count">{loading ? "—" : `${stories.length} links`}</span>
         </div>
 
         {loading && (
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--ink-4)", padding: "40px 0" }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--ink-4)", padding: "40px 0", textAlign: "center" }}>
             loading...
           </div>
         )}
@@ -74,13 +72,14 @@ export default function SavedPage() {
 
         {!loading && stories.length > 0 && (
           <div className="listA">
-            {stories.map((story) => {
+            {stories.map((story, i) => {
               const age = getAge(story.time);
               const domain = getDomain(story.url);
               const cmtCount = story.descendants ?? 0;
               return (
                 <div className="row" key={story.id}>
-                  <BookmarkButton id={story.id} onUnsave={() => handleUnsave(story.id)} />
+                  <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+                  <BookmarkButton id={story.id} className="save-btn" onUnsave={() => handleUnsave(story.id)} />
                   <div>
                     <p className="ttl">
                       <a
@@ -93,16 +92,16 @@ export default function SavedPage() {
                       {domain && <span className="dom">{domain}</span>}
                     </p>
                     <div className="meta">
-                      <b>{story.score}</b>
-                      <span>points</span>
+                      <span className="pts"><b>{story.score}</b> points</span>
                       <span className="sep">·</span>
-                      <span>by {story.by}</span>
+                      <span className="by">by <b>{story.by}</b></span>
                       <span className="sep">·</span>
                       <span>{age}</span>
                     </div>
                   </div>
                   <Link href={`/story/${story.id}`} className="cmts" aria-label={`${cmtCount} comments`}>
-                    <b>{cmtCount}</b> comments
+                    <b>{cmtCount}</b>
+                    comments
                   </Link>
                 </div>
               );

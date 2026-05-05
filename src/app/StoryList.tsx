@@ -1,14 +1,19 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { HNItem } from "./hn";
 import InfiniteList from "./InfiniteList";
 
+const RANGE_LABEL: Record<string, string> = {
+  today: "Today",
+  week: "This week",
+  month: "This month",
+  all: "All-time",
+};
+
 export default function StoryList({
   stories,
-  label = "Front page",
+  label,
   titleLinksToComments,
   range = "today",
   showRangeFilter = false,
@@ -21,48 +26,31 @@ export default function StoryList({
   showRangeFilter?: boolean;
   feed?: string;
 }) {
-  const [pending, startTransition] = useTransition();
-  const [pendingRange, setPendingRange] = useState<string | null>(null);
-  const router = useRouter();
+  const [count, setCount] = useState(stories.length);
 
-  function handleRangeClick(k: "today" | "week" | "month" | "all") {
-    if (k === range) return;
-    setPendingRange(k);
-    startTransition(() => {
-      router.push(k === "today" ? "/" : `/?t=${k}`);
-    });
-  }
+  const heading = showRangeFilter
+    ? RANGE_LABEL[range] ?? "Today"
+    : label ?? "";
+
+  const suffix = showRangeFilter ? "top stories" : "";
 
   return (
     <>
-      {showRangeFilter && (
-        <div className="page-head" style={{ justifyContent: "flex-end" }}>
-          <div className="filters">
-            {(["today", "week", "month", "all"] as const).map((k) => {
-              const isActive = pending ? pendingRange === k : range === k;
-              return (
-                <button
-                  key={k}
-                  onClick={() => handleRangeClick(k)}
-                  className={isActive ? "on" : ""}
-                  style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
-                >
-                  {k === "all" ? "all-time" : k}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      <div style={{ opacity: pending ? 0.4 : 1, transition: "opacity 0.15s" }}>
-        <InfiniteList
-          initialStories={stories}
-          feed={feed}
-          range={range}
-          titleLinksToComments={titleLinksToComments}
-        />
+      <div className="context">
+        <span className="range-name">
+          {heading && <b>{heading}</b>}
+          {suffix}
+        </span>
+        <span className="count">{count} links · refreshed just now</span>
       </div>
+
+      <InfiniteList
+        initialStories={stories}
+        feed={feed}
+        range={range}
+        titleLinksToComments={titleLinksToComments}
+        onCountChange={setCount}
+      />
     </>
   );
 }

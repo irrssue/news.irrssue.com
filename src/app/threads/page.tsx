@@ -6,8 +6,8 @@ export default async function Threads() {
   const stories = await fetchStories("ask", 30);
   return (
     <>
-      <NavBar />
-      <main style={{ maxWidth: 980, margin: "0 auto", padding: "32px 40px 96px" }}>
+      <NavBar count={stories.length} />
+      <main className="page-main">
         <StoryList stories={stories} label="Threads" titleLinksToComments />
       </main>
     </>

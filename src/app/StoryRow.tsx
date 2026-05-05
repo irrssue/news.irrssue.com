@@ -111,11 +111,13 @@ function CommentsPanel({ storyId, onClose }: { storyId: number; onClose: () => v
 
 export default function StoryRow({
   story,
+  index,
   expanded,
   onToggleComments,
   titleLinksToComments,
 }: {
   story: HNItem;
+  index: number;
   expanded: boolean;
   onToggleComments: () => void;
   titleLinksToComments?: boolean;
@@ -127,6 +129,7 @@ export default function StoryRow({
   return (
     <>
       <div className="row">
+        <span className="idx">{String(index + 1).padStart(2, "0")}</span>
         <BookmarkButton id={story.id} className="save-btn" />
         <div>
           <p className="ttl">
@@ -144,10 +147,9 @@ export default function StoryRow({
             {domain && <span className="dom">{domain}</span>}
           </p>
           <div className="meta">
-            <b>{story.score}</b>
-            <span>points</span>
+            <span className="pts"><b>{story.score}</b> points</span>
             <span className="sep">·</span>
-            <span>by {story.by}</span>
+            <span className="by">by <b>{story.by}</b></span>
             <span className="sep">·</span>
             <span>{age}</span>
           </div>
@@ -163,7 +165,8 @@ export default function StoryRow({
             }
           }}
         >
-          <b>{cmtCount}</b> comments
+          <b>{cmtCount}</b>
+          comments
         </Link>
       </div>
       {expanded && <CommentsPanel storyId={story.id} onClose={onToggleComments} />}
