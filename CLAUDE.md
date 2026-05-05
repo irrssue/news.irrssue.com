@@ -20,15 +20,15 @@ Dark theme only. All colors via CSS vars in `globals.css`.
 | `--bg` | `#0b0d0f` | Page background (deep dark canvas) |
 | `--bg-2` | `#141414` | Raised surface (composer, code) |
 | `--bg-3` | `#1a1a1a` | Active nav pill, kbd |
-| `--ink` | `#ededec` | Primary text |
-| `--ink-2` | `#a8a8a6` | Secondary text |
-| `--ink-3` | `#6e6e6c` | Faint / metadata |
-| `--ink-4` | `#4a4a48` | Disabled / dot separators |
+| `--ink` | `#8e8e8d` | Primary text (dimmed 40%) |
+| `--ink-2` | `#656564` | Secondary text |
+| `--ink-3` | `#424241` | Faint / metadata |
+| `--ink-4` | `#2c2c2b` | Disabled / dot separators |
 | `--rule` | `#1e1e1c` | Row dividers, borders |
 | `--rule-2` | `#262624` | Stronger dividers |
 | `--chip` | `#1d1d1b` | Filter chip background |
-| `--op` | `#d9b27a` | OP / accent (warm) |
-| `--hot` | `#d9b27a` | Live indicator |
+| `--op` | `#826b49` | OP / accent (warm) |
+| `--hot` | `#826b49` | Live indicator |
 
 ## Layout: "B — Points first"
 
