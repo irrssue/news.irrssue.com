@@ -15,7 +15,7 @@ Dark theme only. All colors via CSS vars in `globals.css`.
 
 | Token | Value | Use |
 |-------|-------|-----|
-| `--bg` | `#101216` | Page background (GitHub dark canvas) |
+| `--bg` | `#0b0d0f` | Page background (deep dark canvas) |
 | `--bg-2` | `#141414` | Raised surface (composer, code) |
 | `--bg-3` | `#1a1a1a` | Active nav pill, kbd |
 | `--ink` | `#ededec` | Primary text |
