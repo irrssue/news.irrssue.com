@@ -155,9 +155,7 @@ export default function NavBar({ count }: { count?: number }) {
             <span className="ham-bar" />
           </button>
           <Link href="/" className="brand">Reads</Link>
-          {typeof count === "number" && (
-            <span className="brand-count">{count} links</span>
-          )}
+          <SavedNavButton />
         </div>
 
         <div className="navcluster">
