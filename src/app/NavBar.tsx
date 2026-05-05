@@ -194,10 +194,11 @@ export default function NavBar() {
         </div>
 
         <div className="right" style={{ position: "relative" }}>
-          <button className="post-btn" aria-label="Submit a post">+ post</button>
+          <button className="post-btn" aria-label="Submit a post" onClick={handlePostClick}>+ post</button>
           <ProfileButton />
         </div>
       </header>
+      {postOpen && <PostModal onClose={() => setPostOpen(false)} />}
 
       {open && (
         <>
