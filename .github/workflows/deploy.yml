@@ -39,9 +39,8 @@ jobs:
           ssh ssh.irrssue.com bash -s <<'DEPLOY'
           set -e
           cd ~/minimal-hackernews
-          git fetch --prune origin
-          git reset --hard origin/main
-          node --version && npm --version
+          git pull --ff-only origin main
+          rm -rf node_modules .next
           npm ci --prefer-offline
           npm run build
           pm2 restart hackernews --update-env
