@@ -41,6 +41,7 @@ jobs:
           cd ~/minimal-hackernews
           git fetch --prune origin
           git reset --hard origin/main
+          node --version && npm --version
           npm ci --prefer-offline
           npm run build
           pm2 restart hackernews --update-env
