@@ -3,6 +3,7 @@ import { encryptCookie } from "@/lib/crypto";
 import { upsertHNSession, createIrrssueSession } from "@/lib/db";
 import { SESSION_COOKIE, SESSION_MAX_AGE } from "@/lib/session";
 import { checkRateLimit } from "@/lib/rateLimit";
+import { getClientIp } from "@/lib/clientIp";
 
 export async function POST(req: NextRequest) {
   // Enforce HTTPS in production
@@ -11,11 +12,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "HTTPS required" }, { status: 400 });
   }
 
-  // Rate limit by IP
-  const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
-    req.headers.get("x-real-ip") ??
-    "unknown";
+  // Rate limit by real client IP (CF-Connecting-IP behind the tunnel).
+  const ip = getClientIp(req);
   const rl = checkRateLimit(ip);
   if (!rl.allowed) {
     return NextResponse.json(

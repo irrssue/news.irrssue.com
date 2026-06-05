@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSessionUser, getValidHNCookie } from "@/lib/session";
+import { checkSubmitRateLimit } from "@/lib/rateLimit";
+import { getClientIp } from "@/lib/clientIp";
 
 export async function POST(req: NextRequest) {
   const proto = req.headers.get("x-forwarded-proto") ?? req.nextUrl.protocol.replace(":", "");
@@ -10,6 +12,13 @@ export async function POST(req: NextRequest) {
   const sessionUser = await getSessionUser();
   if (!sessionUser) {
     return NextResponse.json({ ok: false, error: "Not authenticated" }, { status: 401 });
+  }
+
+  if (!checkSubmitRateLimit(getClientIp(req)).allowed) {
+    return NextResponse.json(
+      { ok: false, error: "Too many submissions. Try again in 10 minutes." },
+      { status: 429 }
+    );
   }
 
   let title: string, url: string, text: string;

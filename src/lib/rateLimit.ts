@@ -29,3 +29,23 @@ export function checkRateLimit(ip: string): { allowed: boolean; remaining: numbe
   entry.count++;
   return { allowed: true, remaining: MAX_ATTEMPTS - entry.count };
 }
+
+// Submission limiter — tighter than login. 3 submissions / 10 min per IP.
+const SUBMIT_WINDOW_MS = 10 * 60 * 1000;
+const SUBMIT_MAX = 3;
+const submitStore = new Map<string, Entry>();
+
+export function checkSubmitRateLimit(ip: string): { allowed: boolean } {
+  const now = Date.now();
+  const entry = submitStore.get(ip);
+
+  if (!entry || now - entry.window_start > SUBMIT_WINDOW_MS) {
+    submitStore.set(ip, { count: 1, window_start: now });
+    return { allowed: true };
+  }
+
+  if (entry.count >= SUBMIT_MAX) return { allowed: false };
+
+  entry.count++;
+  return { allowed: true };
+}
