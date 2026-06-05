@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, JetBrains_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./AuthContext";
+import Footer from "./Footer";
 
 const fraunces = Fraunces({
   variable: "--font-playfair",
@@ -35,7 +36,10 @@ export default function RootLayout({
     <html lang="en" className={`${fraunces.variable} ${mono.variable} ${inter.variable}`}>
       <body className="min-h-screen">
         <AuthProvider>
-          {children}
+          <div className="app-shell">
+            {children}
+          </div>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

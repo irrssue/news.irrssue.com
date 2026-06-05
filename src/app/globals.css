@@ -30,6 +30,13 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.app-shell { flex: 1 0 auto; }
+
 a { color: inherit; text-decoration: none; }
 ::selection { background: rgba(232, 232, 232, 0.15); }
 
@@ -838,4 +845,182 @@ main.page-main {
   color: var(--ink-4);
   text-align: center;
   padding: 40px 0;
+}
+
+/* === Site footer === */
+.site-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--rule);
+  margin-top: 48px;
+}
+.site-footer-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 18px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.foot-brand {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.foot-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+}
+.foot-links a {
+  color: var(--ink-3);
+  transition: color .15s;
+}
+.foot-links a:hover { color: var(--ink); }
+.foot-dot { color: var(--ink-4); }
+.foot-copy { color: var(--ink-4); }
+
+@media (max-width: 600px) {
+  .site-footer-inner {
+    padding: 16px 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* === Legal pages === */
+.legal-main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 40px 40px 80px;
+}
+@media (max-width: 600px) {
+  .legal-main { padding: 24px 16px 64px; }
+}
+
+.legal h1 {
+  font-family: var(--font-playfair), serif;
+  font-size: 34px;
+  font-weight: 500;
+  color: var(--ink);
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+.legal h2 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 36px 0 10px;
+}
+.legal .legal-date {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--ink-4);
+  margin: 0 0 28px;
+}
+.legal .lead {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-2);
+  margin: 0 0 8px;
+}
+.legal p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin: 0 0 14px;
+}
+.legal ul {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  list-style: disc;
+}
+.legal li {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+.legal a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--rule-2);
+  text-underline-offset: 2px;
+  transition: text-decoration-color .15s;
+}
+.legal a:hover { text-decoration-color: var(--ink-3); }
+.legal strong { color: var(--ink); font-weight: 600; }
+.legal code {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  background: var(--bg-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: var(--ink-2);
+}
+.legal .legal-foot {
+  margin-top: 40px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--ink-3);
+}
+
+.legal-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 4px 0 20px;
+  font-size: 13px;
+}
+.legal-table th,
+.legal-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--rule);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.legal-table th {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-3);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--rule-2);
+}
+@media (max-width: 600px) {
+  .legal-table { font-size: 12px; }
+  .legal-table th, .legal-table td { padding: 7px 8px; }
+}
+
+.legal-index {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+.legal-index li {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.legal-index li a {
+  display: block;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  margin-bottom: 3px;
+}
+.legal-index li a:hover { color: #fff; }
+.legal-index li span {
+  font-size: 13px;
+  color: var(--ink-3);
 }

@@ -206,6 +206,12 @@ export default function ProfileButton() {
             }}>
               We log you into Hacker News on your behalf and store only the session cookie HN returns — never your password. The cookie is encrypted at rest.
             </p>
+            <p style={{ fontFamily: "var(--font-inter)", fontSize: 11, color: "#4a4a4a", marginTop: 12, marginBottom: 0, lineHeight: 1.55 }}>
+              By signing in you agree to our{" "}
+              <a href="/legal/terms" target="_blank" rel="noopener noreferrer" style={{ color: "#7a7a7a", textDecoration: "underline" }}>Terms</a>
+              {" "}and{" "}
+              <a href="/legal/privacy" target="_blank" rel="noopener noreferrer" style={{ color: "#7a7a7a", textDecoration: "underline" }}>Privacy Policy</a>.
+            </p>
             <p style={{ fontFamily: "var(--font-inter)", fontSize: 11, color: "#444", marginTop: 12, marginBottom: 0 }}>
               No account?{" "}
               <a href="https://news.ycombinator.com/login" target="_blank" rel="noopener noreferrer" style={{ color: "#666" }}>
