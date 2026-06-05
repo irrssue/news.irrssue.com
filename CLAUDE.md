@@ -54,7 +54,8 @@ npm run lint
 Live data from HN Firebase API (`https://hacker-news.firebaseio.com/v0`). Top 30 stories, revalidated every 5 minutes. Tags auto-assigned by keyword matching in `src/app/hn.ts`.
 
 ## Git workflow
-- Stage all relevant changes and push directly to `main`. No PRs needed.
+- **Commit and push to `main` after every change** — no matter how small. Never finish a task without committing and pushing. No PRs needed.
+- Write a readable commit message: describe the change in plain English (what behaviour/layout/fix shipped), not the file touched.
 - Write commit messages like an experienced engineer. Follow this format exactly:
 
 ```
