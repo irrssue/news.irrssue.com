@@ -93,11 +93,10 @@ export default function InfiniteList({
   return (
     <>
       <div className="listA">
-        {stories.map((story, i) => (
+        {stories.map((story) => (
           <StoryRow
             key={story.id}
             story={story}
-            index={i}
             expanded={expandedId === story.id}
             onToggleComments={() => toggleComments(story.id)}
             titleLinksToComments={titleLinksToComments}

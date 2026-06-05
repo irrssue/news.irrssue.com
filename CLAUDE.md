@@ -30,14 +30,16 @@ Dark theme only. All colors via CSS vars in `globals.css`.
 | `--op` | `#826b49` | OP / accent (warm) |
 | `--hot` | `#826b49` | Live indicator |
 
-## Layout: "B — Points first"
+## Layout: "Vote first"
 
-Three-column story row: `76px points | 1fr title+meta | 56px comments`
+Four-column story row (`.listA .row`): `36px vote | 22px bookmark | 1fr title+meta | auto comments`
+(mobile ≤600px: `32px | 22px | 1fr | auto`)
 
-- Points: large mono number, dim `points · Xh` below
-- Title: Inter 14.5px, hover to #fff
-- Meta: mono 11px — `domain · by username`
-- Comments: right-aligned mono number + "comments" label
+- Vote: stacked upvote arrow + live score (`.vote-btn`). Arrow turns `--op` on hover/active. Real HN upvote via `POST /api/vote` (requires HN login; un-vote toggles `how=un`).
+- Bookmark: `.save-btn`, appears on row hover, local-only (localStorage).
+- Title: Inter 16px, hover to #999. Domain appended mono `· domain`.
+- Meta: mono 11px — `by username · age` (score lives in the vote button, not repeated here).
+- Comments: right-aligned mono number + "comments" label, links to `/story/[id]`.
 
 ## Dev
 

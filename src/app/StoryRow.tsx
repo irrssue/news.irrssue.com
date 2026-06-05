@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { HNItem, HNComment, getAge, getDomain, fetchComments, sanitizeHNHtml, sanitizeUrl } from "./hn";
 import BookmarkButton from "./BookmarkButton";
+import VoteButton from "./VoteButton";
 
 function CommentNode({ comment, depth }: { comment: HNComment; depth: number }) {
   const [collapsed, setCollapsed] = useState(false);
@@ -111,13 +112,11 @@ function CommentsPanel({ storyId, onClose }: { storyId: number; onClose: () => v
 
 export default function StoryRow({
   story,
-  index,
   expanded,
   onToggleComments,
   titleLinksToComments,
 }: {
   story: HNItem;
-  index: number;
   expanded: boolean;
   onToggleComments: () => void;
   titleLinksToComments?: boolean;
@@ -129,7 +128,7 @@ export default function StoryRow({
   return (
     <>
       <div className="row">
-        <span className="idx">{String(index + 1).padStart(2, "0")}</span>
+        <VoteButton id={story.id} score={story.score} />
         <BookmarkButton id={story.id} className="save-btn" />
         <div>
           <p className="ttl">
@@ -147,8 +146,6 @@ export default function StoryRow({
             {domain && <span className="dom">{domain}</span>}
           </p>
           <div className="meta">
-            <span className="pts"><b>{story.score}</b> points</span>
-            <span className="sep">·</span>
             <span className="by">by <b>{story.by}</b></span>
             <span className="sep">·</span>
             <span>{age}</span>

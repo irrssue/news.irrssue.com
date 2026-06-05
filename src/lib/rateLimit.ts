@@ -49,3 +49,23 @@ export function checkSubmitRateLimit(ip: string): { allowed: boolean } {
   entry.count++;
   return { allowed: true };
 }
+
+// Vote limiter — generous, voting is a light action. 60 votes / 5 min per IP.
+const VOTE_WINDOW_MS = 5 * 60 * 1000;
+const VOTE_MAX = 60;
+const voteStore = new Map<string, Entry>();
+
+export function checkVoteRateLimit(ip: string): { allowed: boolean } {
+  const now = Date.now();
+  const entry = voteStore.get(ip);
+
+  if (!entry || now - entry.window_start > VOTE_WINDOW_MS) {
+    voteStore.set(ip, { count: 1, window_start: now });
+    return { allowed: true };
+  }
+
+  if (entry.count >= VOTE_MAX) return { allowed: false };
+
+  entry.count++;
+  return { allowed: true };
+}

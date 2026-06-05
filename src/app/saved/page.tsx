@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import NavBar from "../NavBar";
 import BookmarkButton from "../BookmarkButton";
+import VoteButton from "../VoteButton";
 import { HNItem, getAge, getDomain, sanitizeUrl } from "../hn";
 
 const KEY = "hn-bookmarks";
@@ -73,13 +74,13 @@ export default function SavedPage() {
 
         {!loading && stories.length > 0 && (
           <div className="listA">
-            {stories.map((story, i) => {
+            {stories.map((story) => {
               const age = getAge(story.time);
               const domain = getDomain(story.url);
               const cmtCount = story.descendants ?? 0;
               return (
                 <div className="row" key={story.id}>
-                  <span className="idx">{String(i + 1).padStart(2, "0")}</span>
+                  <VoteButton id={story.id} score={story.score} />
                   <BookmarkButton id={story.id} className="save-btn" onUnsave={() => handleUnsave(story.id)} />
                   <div>
                     <p className="ttl">
@@ -93,8 +94,6 @@ export default function SavedPage() {
                       {domain && <span className="dom">{domain}</span>}
                     </p>
                     <div className="meta">
-                      <span className="pts"><b>{story.score}</b> points</span>
-                      <span className="sep">·</span>
                       <span className="by">by <b>{story.by}</b></span>
                       <span className="sep">·</span>
                       <span>{age}</span>
