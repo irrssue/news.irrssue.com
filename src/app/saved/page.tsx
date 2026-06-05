@@ -29,24 +29,25 @@ async function fetchItem(id: number): Promise<HNItem | null> {
 export default function SavedPage() {
   const [stories, setStories] = useState<HNItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [ids, setIds] = useState<number[]>([]);
+  const [ids, setIds] = useState<number[] | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
     const bookmarkIds = getBookmarkIds();
-    setIds(bookmarkIds);
-    if (bookmarkIds.length === 0) {
-      setLoading(false);
-      return;
-    }
     Promise.all(bookmarkIds.map(fetchItem)).then((results) => {
+      if (cancelled) return;
+      setIds(bookmarkIds);
       setStories(results.filter(Boolean) as HNItem[]);
       setLoading(false);
     });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   function handleUnsave(id: number) {
     setStories((prev) => prev.filter((s) => s.id !== id));
-    setIds((prev) => prev.filter((i) => i !== id));
+    setIds((prev) => prev?.filter((i) => i !== id) ?? null);
   }
 
   return (
@@ -64,7 +65,7 @@ export default function SavedPage() {
           </div>
         )}
 
-        {!loading && ids.length === 0 && (
+        {!loading && ids?.length === 0 && (
           <div className="empty-thread">
             no saved stories yet — bookmark something first
           </div>
