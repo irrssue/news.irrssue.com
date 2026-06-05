@@ -130,7 +130,13 @@ export default function ProfileButton() {
             >
               HN profile ↗
             </a>
-            <button onClick={handleLogout} style={{ ...dropdownItemStyle, background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left" }}>
+            <a href="/legal/terms" style={dropdownItemStyle} onClick={() => setDropdownOpen(false)}>
+              Terms
+            </a>
+            <a href="/legal/privacy" style={dropdownItemStyle} onClick={() => setDropdownOpen(false)}>
+              Privacy
+            </a>
+            <button onClick={handleLogout} style={{ ...dropdownItemStyle, background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left", borderTop: "1px solid #1e1e1e", marginTop: 4, paddingTop: 11 }}>
               Sign out
             </button>
           </div>

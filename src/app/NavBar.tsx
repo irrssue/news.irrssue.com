@@ -194,6 +194,11 @@ export default function NavBar() {
         </div>
 
         <div className="right" style={{ position: "relative" }}>
+          <nav className="topbar-legal">
+            <Link href="/legal/terms">Terms</Link>
+            <span className="foot-dot">·</span>
+            <Link href="/legal/privacy">Privacy</Link>
+          </nav>
           <button className="post-btn" aria-label="Submit a post" onClick={handlePostClick}>+ post</button>
           <ProfileButton />
         </div>
@@ -225,6 +230,11 @@ export default function NavBar() {
               <button className="post-btn" aria-label="Submit a post" onClick={handlePostClick}>+ post</button>
               <ProfileButton />
             </div>
+            <nav className="mobile-legal">
+              <Link href="/legal/terms" onClick={() => setOpen(false)}>Terms</Link>
+              <span className="foot-dot">·</span>
+              <Link href="/legal/privacy" onClick={() => setOpen(false)}>Privacy</Link>
+            </nav>
           </div>
         </>
       )}
