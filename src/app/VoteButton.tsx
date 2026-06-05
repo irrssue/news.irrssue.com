@@ -47,7 +47,7 @@ export default function VoteButton({ id, score }: { id: number; score: number })
       aria-label={voted ? "remove upvote" : "upvote"}
       title={user ? "upvote" : "sign in to upvote"}
     >
-      <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">
+      <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">
         <path d="M8 3l5 6H9v4H7V9H3z" fill="currentColor" />
       </svg>
       <span className="vote-n">{display}</span>
