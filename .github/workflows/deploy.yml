@@ -38,7 +38,7 @@ jobs:
         run: |
           ssh ssh.irrssue.com bash -s <<'DEPLOY'
           set -e
-          cd ~/minimal-hackernews
+          cd ~/projects/minimal-hackernews
           git pull --ff-only origin main
           rm -rf node_modules .next
           npm ci --prefer-offline
